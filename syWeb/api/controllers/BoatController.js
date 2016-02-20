@@ -25,7 +25,7 @@ module.exports = {
 			  	boatObj.port = boat.port;
 			  	boatObj.active = boat.active;
 
-				Log.findOne({where: { boat: 'boat' }, sort: 'createdAt DESC'}).exec(function (err,log) {
+				Log.findOne({where: { boat: boat }, sort: 'createdAt DESC'}).exec(function (err,log) {
 		        	if(err){
 		            	return res.json({
 		              		error:err
