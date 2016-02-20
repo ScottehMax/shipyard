@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style type="text/css">
+    body {
+      background-color: #EFEFEF;
+      margin: 0;
+    }
+    #top {
+      height: 60px;
+      width: 100%;
+      background: #60dac4; /* Old browsers */
+      background: -moz-linear-gradient(top, #60dac4 0%, #7db9e8 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(top, #60dac4 0%,#7db9e8 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom, #60dac4 0%,#7db9e8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#60dac4', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+    }
+    .boatbox {
+        height: 80px;
+        width: 900px;
+        border-left: 4px #49d71e solid;
+        background: white;
+        padding: 15px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        vertical-align: middle;
+    }
+    .boattext {
+        font-family: "Helvetica", sans-serif;
+        margin: 5px;
+    }
+    #boatlistcontainer {
+        padding: 20px;
+    }
+    .boatname {
+        font-size: 22px;
+    }
+    .boatport {
+        font-size: 18px;
+        color: #a8a8a8;
+    }
+    .yourboat {
+        margin-bottom: 10px;
+        font-size: 30px;
+    }
+    .addnewbutton {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        position: absolute;
+        bottom: 50px;
+        right: 50px;
+        background: #ff4444;
+        color: #fff;
+        font-size: 42px;
+        text-align: center;
+        line-height: 65px;
+    }
+  </style>
+</head>
+<body>
+  <div id="top"></div>
+  <!-- The list of boats with header -->
+  <div id="boatlistcontainer">
+      <p class="yourboat boattext">YOUR SHIPS</p>
+      <div class="boatbox">
+          <p class="boatname boattext">Server Name</p>
+          <p class="boatport boattext">:9000</p>
+      </div>
+  </div>
+  <div class="addnewbutton">+</div>
+</body>
+</html>
