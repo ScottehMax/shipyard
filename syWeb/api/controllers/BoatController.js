@@ -16,8 +16,6 @@ module.exports = {
             	});
           	}
 
-			console.log(boat)
-
           	if(boat === undefined) {
             	return res.notFound();
           	}
@@ -49,12 +47,10 @@ module.exports = {
 			            	});
 			          	}
 
-						console.log(log);
-
 			          	if(log !== undefined) {
 							var currentTime = Date.now();
 							var upAt = Date.parse(log.createdAt);
-							var uptime = currentTime - upAt;
+							var uptime = Math.floor((currentTime - upAt)/1000);
 							boatObj.uptime = uptime;
 						}
 
