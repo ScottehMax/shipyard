@@ -69,63 +69,67 @@ module.exports = {
 
 		var fleetOfBoats = [];
 
-		Boat.find().exec(function (err,boat) {
+		Boat.find().exec(function (err,boats) {
         	if(err){
             	return res.json({
               		error:err
             	});
           	}
 
-          	if(boat === undefined) {
+          	if(boats === undefined) {
             	return res.notFound();
           	}
           	else {
-				var boatObj = {};
-			  	boatObj.name = boat.name;
-			  	boatObj.port = boat.port;
-			  	boatObj.active = boat.active;
 
-				// find last pull time
-				Log.findOne({where: { boat: boat.id, type: 'pull'}, sort: 'createdAt DESC'}).exec(function (err,log) {
-		        	if(err){
-		            	return res.json({
-		              		error:err
-		            	});
-		          	}
+        for (var i = 0; i<boats.length; i++){
+          var boat = boats[i];
+    				var boatObj = {};
+    			  	boatObj.name = boat.name;
+    			  	boatObj.port = boat.port;
+    			  	boatObj.active = boat.active;
 
-					console.log(log);
+    				// find last pull time
+    				Log.findOne({where: { boat: boat.id, type: 'pull'}, sort: 'createdAt DESC'}).exec(function (err,log) {
+    		        	if(err){
+    		            	return res.json({
+    		              		error:err
+    		            	});
+    		          	}
 
-		          	if(log !== undefined) {
-						boatObj.lastUpdated = log.createdAt;
-					}
+    					console.log(log);
 
-					// find and calculate uptime
-					Log.findOne({where: { boat: boat.id, type: 'up'}, sort: 'createdAt DESC'}).exec(function (err,log) {
-			        	if(err){
-			            	return res.json({
-			              		error:err
-			            	});
-			          	}
+    		          	if(log !== undefined) {
+    						boatObj.lastUpdated = log.createdAt;
+    					}
 
-			          	if(log !== undefined) {
-							var currentTime = Date.now();
-							var upAt = Date.parse(log.createdAt);
-							var uptime = Math.floor((currentTime - upAt)/1000);
-							boatObj.uptime = uptime;
-						}
+    					// find and calculate uptime
+    					Log.findOne({where: { boat: boat.id, type: 'up'}, sort: 'createdAt DESC'}).exec(function (err,log) {
+    			        	if(err){
+    			            	return res.json({
+    			              		error:err
+    			            	});
+    			          	}
 
-						//Add the boat to the fleet
-						fleetOfBoats.push(res.json(boatObj));
+    			          	if(log !== undefined) {
+    							var currentTime = Date.now();
+    							var upAt = Date.parse(log.createdAt);
+    							var uptime = Math.floor((currentTime - upAt)/1000);
+    							boatObj.uptime = uptime;
+    						}
 
-					});
+    						//Add the boat to the fleet
+    						fleetOfBoats.push(boatObj);
 
-				});
+    					});
+
+    				});
 
 
-		  	}
-        });
+    		  	}
+            });
+        }
 
-	return fleetOfBoats;
+	return res.json(fleetOfBoats);
  	}
 
 };
