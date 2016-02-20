@@ -18,7 +18,7 @@ module.exports = {
         },
 
         boat: {
-            model: 'boat'
+            type: 'integer'
         }
 
     }
