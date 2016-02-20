@@ -8,24 +8,40 @@
 module.exports = {
 
 	get: function (req, res) {
-		var id = req.param('id');
-		Boat.findOne({id:id})
-        .exec(function (err,boat) {
-          if(err){
-            return res.json({
-              error:err
-            });
-          }
-          if(boat === undefined) {
-            return res.notFound();
-          }
-          else {
-			  var boatObj = {};
-			  boatObj.name = boat.name;
-			  boatObj.port = boat.port;
-			  boatObj.active = boat.active;
-			  return res.json(boatObj);
-		  }
+		var boatID = req.param('id');
+		Boat.findOne({id:boatID}).exec(function (err,boat) {
+        	if(err){
+            	return res.json({
+              		error:err
+            	});
+          	}
+
+          	if(boat === undefined) {
+            	return res.notFound();
+          	}
+          	else {
+				var boatJSON = {};
+			  	boatObj.name = boat.name;
+			  	boatObj.port = boat.port;
+			  	boatObj.active = boat.active;
+
+				Log.findOne({where: { boat: 'boat' }, sort: 'createdAt DESC'}).exec(function (err,log) {
+		        	if(err){
+		            	return res.json({
+		              		error:err
+		            	});
+		          	}
+
+		          	if(log === undefined) {
+		            	return res.notFound();
+		          	}
+		          	else {
+						boatObj.lastUpdated = log.createdAt;
+					}
+				});
+
+			  	return res.json(boatObj);
+		  	}
         });
  	}
 

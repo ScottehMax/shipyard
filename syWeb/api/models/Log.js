@@ -17,10 +17,6 @@ module.exports = {
             type: 'string'
         },
 
-        time: {
-            type: 'datetime'
-        },
-
         boat: {
             model: 'boat'
         }
