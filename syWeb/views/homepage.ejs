@@ -63,7 +63,7 @@
   <!-- The list of boats with header -->
   <div id="boatlistcontainer">
       <p class="yourboat boattext">YOUR SHIPS</p>
-      <% _.each(boat, function(model) { %>
+      <% _.each(boats, function(model) { %>
           <div class="boatbox">
               <p class="boatname boattext"><%= model.name %></p>
               <p class="boatport boattext">:<%= model.port %></p>
