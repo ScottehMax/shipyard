@@ -21,5 +21,9 @@ module.exports = {
             type: 'datetime'
         },
 
+        boat: {
+            model: 'boat'
+        }
+
     }
 };
