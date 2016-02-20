@@ -23,6 +23,10 @@ module.exports = {
 
         user: {
             type: 'integer'
+        },
+
+        lastUpdated: {
+            type: 'datetime'
         }
     }
 };

@@ -155,7 +155,9 @@ module.exports = {
         for (var i = 0; i < boats.length; i++) {
           var boat = boats[i];
 
-          fleetOfBoats.push(getBoat(boat.id));
+		  boat.uptime = Math.floor((Date.now() - boat.lastUpdated)/1000);
+
+          fleetOfBoats.push(boat);
 
           console.log(fleetOfBoats);
         }
