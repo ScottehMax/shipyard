@@ -7,8 +7,19 @@
 
 module.exports = {
 
-  attributes: {
+    attributes: {
 
-  }
+        type: {
+            type: 'string'
+        },
+;;;
+        message: {
+            type: 'string'
+        },
+
+        time: {
+            type: 'datetime'
+        },
+
+    }
 };
-
