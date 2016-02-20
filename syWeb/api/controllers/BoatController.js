@@ -63,9 +63,69 @@ module.exports = {
 
 		  	}
         });
+ 	},
+
+	getAll: function (req, res) {
+
+		var fleetOfBoats = [];
+
+		Boat.findOne().exec(function (err,boat) {
+        	if(err){
+            	return res.json({
+              		error:err
+            	});
+          	}
+
+          	if(boat === undefined) {
+            	return res.notFound();
+          	}
+          	else {
+				var boatObj = {};
+			  	boatObj.name = boat.name;
+			  	boatObj.port = boat.port;
+			  	boatObj.active = boat.active;
+
+				// find last pull time
+				Log.findOne({where: { boat: boat.id, type: 'pull'}, sort: 'createdAt DESC'}).exec(function (err,log) {
+		        	if(err){
+		            	return res.json({
+		              		error:err
+		            	});
+		          	}
+
+					console.log(log);
+
+		          	if(log !== undefined) {
+						boatObj.lastUpdated = log.createdAt;
+					}
+
+					// find and calculate uptime
+					Log.findOne({where: { boat: boat.id, type: 'up'}, sort: 'createdAt DESC'}).exec(function (err,log) {
+			        	if(err){
+			            	return res.json({
+			              		error:err
+			            	});
+			          	}
+
+			          	if(log !== undefined) {
+							var currentTime = Date.now();
+							var upAt = Date.parse(log.createdAt);
+							var uptime = Math.floor((currentTime - upAt)/1000);
+							boatObj.uptime = uptime;
+						}
+
+						//Add the boat to the fleet
+						fleetOfBoats.push(res.json(boatObj));
+
+					});
+
+				});
+
+
+		  	}
+        });
+
+	return fleetOfBoats;
  	}
-
-
-
 
 };
