@@ -69,7 +69,7 @@ module.exports = {
 
 		var fleetOfBoats = [];
 
-		Boat.findOne().exec(function (err,boat) {
+		Boat.find().exec(function (err,boat) {
         	if(err){
             	return res.json({
               		error:err
