@@ -66,13 +66,13 @@ function getBoat(boatID){
     id: boatID
   }).exec(function(err, boat) {
     if (err) {
-      return res.json({
+      return {
         error: err
-      });
+      };
     }
 
     if (boat === undefined) {
-      return res.notFound();
+      return {};
     } else {
       var boatObj = {};
       boatObj.name = boat.name;
@@ -88,9 +88,7 @@ function getBoat(boatID){
         sort: 'createdAt DESC'
       }).exec(function(err, log) {
         if (err) {
-          return res.json({
-            error: err
-          });
+          return {};
         }
 
         console.log(log);
@@ -110,9 +108,7 @@ function getBoat(boatID){
           sort: 'createdAt DESC'
         }).exec(function(err, log) {
           if (err) {
-            return res.json({
-              error: err
-            });
+            return {};
           }
 
           if (log !== undefined) {
