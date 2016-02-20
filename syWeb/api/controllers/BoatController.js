@@ -82,14 +82,60 @@ module.exports = {
         boatObj.port = boat.port;
         boatObj.active = boat.active;
 
-        boatObj.lastUpdated = getLastPullTime(boat);
-        boatObj.uptime = getUptime(boat);
+        // find last pull time
+        Log.findOne({
+          where: {
+            boat: boat.id,
+            type: 'pull'
+          },
+          sort: 'createdAt DESC'
+        }).exec(function(err, log) {
+          if (err) {
+            return res.json({
+              error: err
+            });
+          }
 
-        return res.json(boatObj);
+          console.log(log);
+
+          if (log !== undefined) {
+            boatObj.lastUpdated = log.createdAt;
+          } else {
+            boatObj.lastUpdated = null;
+          }
+
+          // find and calculate uptime
+          Log.findOne({
+            where: {
+              boat: boat.id,
+              type: 'up'
+            },
+            sort: 'createdAt DESC'
+          }).exec(function(err, log) {
+            if (err) {
+              return res.json({
+                error: err
+              });
+            }
+
+            if (log !== undefined) {
+              var currentTime = Date.now();
+              var upAt = Date.parse(log.createdAt);
+              var uptime = Math.floor((currentTime - upAt) / 1000);
+              boatObj.uptime = uptime;
+            } else {
+              boatObj.uptime = null;
+            }
+
+            return res.json(boatObj);
+
+          });
+
+        });
+
       }
 
     });
-
 
   },
 
@@ -125,10 +171,11 @@ module.exports = {
             function(){
               getUptime(boat, function(result) {
                 boatObj.uptime = result;
-                fleetOfBoats.push(boatObj);
               });
             }
           ]);
+
+          fleetOfBoats.push(boatObj);
 
           console.log(fleetOfBoats);
         }
