@@ -138,7 +138,7 @@ module.exports = {
 
   get: function(req, res) {
     var boatID = req.param('id');
-    return ret.json(getBoat(boatID));
+    return res.json(getBoat(boatID));
   },
 
   getAll: function(req, res) {
@@ -158,7 +158,7 @@ module.exports = {
 
         for (var i = 0; i < boats.length; i++) {
           var boat = boats[i];
-          
+
           fleetOfBoats.push(getBoat(boat.id));
 
           console.log(fleetOfBoats);
