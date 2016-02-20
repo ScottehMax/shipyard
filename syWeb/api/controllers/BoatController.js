@@ -27,7 +27,8 @@ module.exports = {
 			  	boatObj.port = boat.port;
 			  	boatObj.active = boat.active;
 
-				Log.findOne({where: { boat: boat.id }, sort: 'createdAt DESC'}).exec(function (err,log) {
+				// find last pull time
+				Log.findOne({where: { boat: boat.id, type: 'pull'}, sort: 'createdAt DESC'}).exec(function (err,log) {
 		        	if(err){
 		            	return res.json({
 		              		error:err
@@ -40,8 +41,27 @@ module.exports = {
 						boatObj.lastUpdated = log.createdAt;
 					}
 
-					return res.json(boatObj);
-					
+					// find and calculate uptime
+					Log.findOne({where: { boat: boat.id, type: 'up'}, sort: 'createdAt DESC'}).exec(function (err,log) {
+			        	if(err){
+			            	return res.json({
+			              		error:err
+			            	});
+			          	}
+
+						console.log(log);
+
+			          	if(log !== undefined) {
+							var currentTime = Date.now;
+							var upAt = Date.parse(log.createdAt);
+							var uptime = currentTime - upAt;
+							boatObj.uptime = uptime;
+						}
+
+						return res.json(boatObj);
+
+					});
+
 				});
 
 
