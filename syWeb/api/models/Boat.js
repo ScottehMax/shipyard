@@ -21,8 +21,8 @@ module.exports = {
             type: 'string'
         },
 
-        owner: {
-            model: 'user'
+        user: {
+            type: 'integer'
         }
     }
 };
