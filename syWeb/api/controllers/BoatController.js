@@ -52,7 +52,7 @@ module.exports = {
 						console.log(log);
 
 			          	if(log !== undefined) {
-							var currentTime = Date.now;
+							var currentTime = Date.now();
 							var upAt = Date.parse(log.createdAt);
 							var uptime = currentTime - upAt;
 							boatObj.uptime = uptime;
