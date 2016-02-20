@@ -20,7 +20,7 @@ module.exports = {
             	return res.notFound();
           	}
           	else {
-				var boatJSON = {};
+				var boatObj = {};
 			  	boatObj.name = boat.name;
 			  	boatObj.port = boat.port;
 			  	boatObj.active = boat.active;
