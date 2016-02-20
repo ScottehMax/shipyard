@@ -16,6 +16,8 @@ module.exports = {
             	});
           	}
 
+			console.log(boat)
+
           	if(boat === undefined) {
             	return res.notFound();
           	}
@@ -32,12 +34,17 @@ module.exports = {
 		            	});
 		          	}
 
+					console.log(log);
+
 		          	if(log !== undefined) {
 						boatObj.lastUpdated = log.createdAt;
 					}
+
+					return res.json(boatObj);
+					
 				});
 
-			  	return res.json(boatObj);
+
 		  	}
         });
  	}
