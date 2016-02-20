@@ -5,7 +5,7 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
- function getLastPullTime(boat) {
+ function getLastPullTime(boat, callback) {
 
  	// find last pull time
  	Log.findOne({where: { boat: boat.id, type: 'pull'}, sort: 'createdAt DESC'}).exec(function (err,log) {
@@ -18,15 +18,15 @@
  		console.log(log);
 
  		if(log !== undefined) {
- 			return log.createdAt;
+ 			callback(log.createdAt);
  		} else {
-			return null;
+			callback(null);
 		}
 
  	});
  }
 
- function getUptime(boat) {
+ function getUptime(boat, callback) {
 
 	 // find and calculate uptime
 	 Log.findOne({where: { boat: boat.id, type: 'up'}, sort: 'createdAt DESC'}).exec(function (err,log) {
@@ -40,9 +40,9 @@
 			 var currentTime = Date.now();
 			 var upAt = Date.parse(log.createdAt);
 			 var uptime = Math.floor((currentTime - upAt)/1000);
-			 return uptime;
+			 callback(uptime);
 		 } else {
-			 return null;
+			 callback(null);
 		 }
 
 	 });
@@ -103,20 +103,22 @@ module.exports = {
 				  	boatObj.port = boat.port;
 				  	boatObj.active = boat.active;
 
-					console.log();
+					getLastPullTime(boat, function(result){
+						boatObj.lastUpdated = result;
+						getUptime(boat, function(result){
+							boatObj.uptime = result;
+							//Add the boat to the fleet
+							fleetOfBoats.push(boatObj);
 
-					boatObj.lastUpdated = getLastPullTime(boat);
-					boatObj.uptime = getUptime(boat);
+							console.log(fleetOfBoats);
 
-					//Add the boat to the fleet
-					fleetOfBoats.push(boatObj);
-
+							if(i == boats.length-1) {
+								return res.json(fleetOfBoats);
+							}
+						});
+					});
 			  	}
         	}
-
-			return res.json(fleetOfBoats);
  		});
-
 	}
-
 };
