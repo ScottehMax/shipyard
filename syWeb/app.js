@@ -22,6 +22,26 @@
 // no matter where we actually lift from.
 process.chdir(__dirname);
 
+const exec = require('child_process').exec; // super super scary! WHY WHY WHY
+var fs = require('fs');
+
+try {
+    stats = fs.lstatSync('./apps');
+
+    if (!stats.isDirectory()) {
+
+        console.log('What are you playing at?');
+        // >: (
+        exec('rm apps');
+        exec('mkdir apps');
+    }
+}
+catch (e) {
+    // doesn't exist tbh
+    console.log('Your apps folder does not exist! Creating...');
+    exec('mkdir apps');
+}
+
 // Ensure a "sails" can be located:
 (function() {
   var sails;
