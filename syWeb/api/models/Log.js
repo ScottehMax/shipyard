@@ -12,7 +12,7 @@ module.exports = {
         type: {
             type: 'string'
         },
-;;;
+
         message: {
             type: 'string'
         },
