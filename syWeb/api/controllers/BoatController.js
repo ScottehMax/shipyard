@@ -61,32 +61,51 @@ function getUptime(boat, callback) {
 
 }
 
-module.exports = {
+function getBoat(boatID){
+  Boat.findOne({
+    id: boatID
+  }).exec(function(err, boat) {
+    if (err) {
+      return res.json({
+        error: err
+      });
+    }
 
-  get: function(req, res) {
-    var boatID = req.param('id');
-    Boat.findOne({
-      id: boatID
-    }).exec(function(err, boat) {
-      if (err) {
-        return res.json({
-          error: err
-        });
-      }
+    if (boat === undefined) {
+      return res.notFound();
+    } else {
+      var boatObj = {};
+      boatObj.name = boat.name;
+      boatObj.port = boat.port;
+      boatObj.active = boat.active;
 
-      if (boat === undefined) {
-        return res.notFound();
-      } else {
-        var boatObj = {};
-        boatObj.name = boat.name;
-        boatObj.port = boat.port;
-        boatObj.active = boat.active;
+      // find last pull time
+      Log.findOne({
+        where: {
+          boat: boat.id,
+          type: 'pull'
+        },
+        sort: 'createdAt DESC'
+      }).exec(function(err, log) {
+        if (err) {
+          return res.json({
+            error: err
+          });
+        }
 
-        // find last pull time
+        console.log(log);
+
+        if (log !== undefined) {
+          boatObj.lastUpdated = log.createdAt;
+        } else {
+          boatObj.lastUpdated = null;
+        }
+
+        // find and calculate uptime
         Log.findOne({
           where: {
             boat: boat.id,
-            type: 'pull'
+            type: 'up'
           },
           sort: 'createdAt DESC'
         }).exec(function(err, log) {
@@ -96,47 +115,30 @@ module.exports = {
             });
           }
 
-          console.log(log);
-
           if (log !== undefined) {
-            boatObj.lastUpdated = log.createdAt;
+            var currentTime = Date.now();
+            var upAt = Date.parse(log.createdAt);
+            var uptime = Math.floor((currentTime - upAt) / 1000);
+            boatObj.uptime = uptime;
           } else {
-            boatObj.lastUpdated = null;
+            boatObj.uptime = null;
           }
 
-          // find and calculate uptime
-          Log.findOne({
-            where: {
-              boat: boat.id,
-              type: 'up'
-            },
-            sort: 'createdAt DESC'
-          }).exec(function(err, log) {
-            if (err) {
-              return res.json({
-                error: err
-              });
-            }
-
-            if (log !== undefined) {
-              var currentTime = Date.now();
-              var upAt = Date.parse(log.createdAt);
-              var uptime = Math.floor((currentTime - upAt) / 1000);
-              boatObj.uptime = uptime;
-            } else {
-              boatObj.uptime = null;
-            }
-
-            return res.json(boatObj);
-
-          });
+          return boatObj;
 
         });
 
-      }
+      });
 
-    });
+    }
+  });
+}
 
+module.exports = {
+
+  get: function(req, res) {
+    var boatID = req.param('id');
+    return ret.json(getBoat(boatID));
   },
 
   getAll: function(req, res) {
@@ -156,26 +158,8 @@ module.exports = {
 
         for (var i = 0; i < boats.length; i++) {
           var boat = boats[i];
-          var boatObj = {};
-
-          boatObj.name = boat.name;
-          boatObj.port = boat.port;
-          boatObj.active = boat.active;
-
-          async.series([
-            function(){
-              getLastPullTime(boat, function(result) {
-                boatObj.lastUpdated = result;
-              });
-            },
-            function(){
-              getUptime(boat, function(result) {
-                boatObj.uptime = result;
-              });
-            }
-          ]);
-
-          fleetOfBoats.push(boatObj);
+          
+          fleetOfBoats.push(getBoat(boat.id));
 
           console.log(fleetOfBoats);
         }
