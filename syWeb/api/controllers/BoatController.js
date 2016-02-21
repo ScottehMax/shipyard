@@ -154,14 +154,14 @@ module.exports = {
 
               console.log(entry.id + ' is a file, removing it and making a directory');
               // >: (
-              exec('rm apps/'+entry.id);
-              exec('mkdir apps/'+entry.id);
+              spawnSync('rm', ['apps/'+entry.id]);
+              spawnSync('mkdir', ['apps/'+entry.id]);
           }
       }
       catch (e) {
           // doesn't exist tbh
           console.log('Folder ' + entry.id + ' does not exist, creating...');
-          exec('mkdir apps/'+entry.id);
+          spawnSync('mkdir', ['apps/'+entry.id]);
       }
 
       // MAN THE DECK BOYS, WE'RE COMING INTO THE HARBOUR
@@ -173,7 +173,7 @@ module.exports = {
         return res.json({success: true});
       } catch (e){
         // failed, delete directory and object
-        exec('rm apps/'+entry.id);
+        spawnSync('rm', ['apps/'+entry.id]);
         Boat.destroy({id:entry.id}, function(err, done){
           if (err) return res.json({error: err});
           return res.json({error: reasonForFailure});
