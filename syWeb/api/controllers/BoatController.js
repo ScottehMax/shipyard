@@ -7,7 +7,7 @@
 
 const spawnSync = require('child_process').spawnSync; // scary!
 
-function getBoat(boatID){
+function getBoat(boatID) {
   Boat.findOne({
     id: boatID
   }).exec(function(err, boat) {
@@ -78,20 +78,26 @@ function getBoat(boatID){
 
 module.exports = {
 
-  create: function(req,res) {
+  create: function(req, res) {
     // check if valid git repo
     try {
-      	console.log("[ADD] Checking validity of " + req.param('boat_giturl'));
-	  	if (req.param('boat_giturl') === undefined) {
-			  console.log("Repo is undefined.");
-		    return res.json({error: "Repo is undefined."});
-	    } else {
-	      spawnSync('git', ['ls-remote', '--exit-code', '-h', '"'+req.param('boat_giturl')+'"'], {'cwd': './apps'});
-	      console.log("[ADD] Repo is valid");
-  		}
-    } catch(e) {
+      console.log("[ADD] Checking validity of " + req.param('boat_giturl'));
+      if (req.param('boat_giturl') === undefined) {
+        console.log("Repo is undefined.");
+        return res.json({
+          error: "Repo is undefined."
+        });
+      } else {
+        spawnSync('git', ['ls-remote', '--exit-code', '-h', '"' + req.param('boat_giturl') + '"'], {
+          'cwd': './apps'
+        });
+        console.log("[ADD] Repo is valid");
+      }
+    } catch (e) {
       console.log("[ADD] Repo is invalid");
-      return res.json({error: 'Repo invalid: ' + e});
+      return res.json({
+        error: 'Repo invalid: ' + e
+      });
     }
     // create boat object
     Boat.create({
@@ -100,27 +106,26 @@ module.exports = {
       giturl: req.param('boat_giturl'),
       mainAppFile: req.param('boat_main_app_file'),
       lastUpdated: new Date()
-    }, function(err, entry){
-        if (err){
-            return res.send(err);
-        }
-        //console.log(entry);
+    }, function(err, entry) {
+      if (err) {
+        return res.send(err);
+      }
+      //console.log(entry);
       //create dir for id
       try {
-          stats = fs.lstatSync('./apps/'+entry.id);
-          if (!stats.isDirectory()) {
+        stats = fs.lstatSync('./apps/' + entry.id);
+        if (!stats.isDirectory()) {
 
-              console.log(entry.id + ' is a file, removing it and making a directory');
-              // >: (
-              spawnSync('rm', ['apps/'+entry.id]);
-              spawnSync('mkdir', ['apps/'+entry.id]);
-          }
-      }
-      catch (e) {
-          // doesn't exist tbh
-          console.log('Folder ' + entry.id + ' does not exist, creating...');
-          spawnSync('mkdir', ['apps/'+entry.id]);
-          console.log("Created the folder");
+          console.log(entry.id + ' is a file, removing it and making a directory');
+          // >: (
+          spawnSync('rm', ['apps/' + entry.id]);
+          spawnSync('mkdir', ['apps/' + entry.id]);
+        }
+      } catch (e) {
+        // doesn't exist tbh
+        console.log('Folder ' + entry.id + ' does not exist, creating...');
+        spawnSync('mkdir', ['apps/' + entry.id]);
+        console.log("Created the folder");
       }
 
       // MAN THE DECK BOYS, WE'RE COMING INTO THE HARBOUR
@@ -128,25 +133,41 @@ module.exports = {
         try {
           // Clone git
           console.log("[ADD] Cloning repo");
-          spawnSync('git', ['clone', entry.giturl, entry.id], {'cwd': './apps'});
+          spawnSync('git', ['clone', entry.giturl, entry.id], {
+            'cwd': './apps'
+          });
           console.log("Cloned the repo");
-        } catch(e) {
-          spawnSync('rm', ['-rf', 'apps/'+entry.id]);
-          Boat.destroy({id:entry.id}, function(err, done){
-            if (err) return res.json({error: err});
-            return res.json({error: 'Couldn\'t clone repo: ' + e});
+        } catch (e) {
+          spawnSync('rm', ['-rf', 'apps/' + entry.id]);
+          Boat.destroy({
+            id: entry.id
+          }, function(err, done) {
+            if (err) return res.json({
+              error: err
+            });
+            return res.json({
+              error: 'Couldn\'t clone repo: ' + e
+            });
           });
         }
 
         try {
           // install dependencies
-          spawnSync('npm', ['install'], {'cwd': './apps/' + entry.id});
+          spawnSync('npm', ['install'], {
+            'cwd': './apps/' + entry.id
+          });
           console.log("Installed dependencies");
-        } catch(e) {
-          spawnSync('rm', ['-rf', 'apps/'+entry.id]);
-          Boat.destroy({id:entry.id}, function(err, done){
-            if (err) return res.json({error: err});
-            return res.json({error: 'Couldn\'t install dependencies: ' + e});
+        } catch (e) {
+          spawnSync('rm', ['-rf', 'apps/' + entry.id]);
+          Boat.destroy({
+            id: entry.id
+          }, function(err, done) {
+            if (err) return res.json({
+              error: err
+            });
+            return res.json({
+              error: 'Couldn\'t install dependencies: ' + e
+            });
           });
         }
 
@@ -155,25 +176,38 @@ module.exports = {
           type: 'pull',
           message: 'HMS ' + entry.name + ' has been built and is almost ready for sailing.',
           boat: entry.id
-        }, function(err,newLog){
-          if (err) return res.json({error: 'Error cloning repo:' + e});
+        }, function(err, newLog) {
+          if (err) return res.json({
+            error: 'Error cloning repo:' + e
+          });
 
           try {
             // Start server
-            spawnSync('forever', ['start', 'app.js'], {'cwd': './apps/' + entry.id});
-          } catch(e) {
-            spawnSync('rm', ['-rf', 'apps/'+entry.id]);
-            Boat.destroy({id:entry.id}, function(err, done){
-              if (err) return res.json({error: err});
-              return res.json({error: 'Couldn\'t start server: ' + e});
+            spawnSync('forever', ['start', 'app.js'], {
+              'cwd': './apps/' + entry.id
+            });
+          } catch (e) {
+            spawnSync('rm', ['-rf', 'apps/' + entry.id]);
+            Boat.destroy({
+              id: entry.id
+            }, function(err, done) {
+              if (err) return res.json({
+                error: err
+              });
+              return res.json({
+                error: 'Couldn\'t start server: ' + e
+              });
             });
           }
 
 
-		 try {
 
           // set active
-          Boat.update({id:entry.id}, {active:true}, function(err, newBoat){
+          Boat.update({
+            id: entry.id
+          }, {
+            active: true
+          }, function(err, newBoat) {
             if (err) console.log(err);
             console.log(newBoat);
 
@@ -182,20 +216,30 @@ module.exports = {
               type: 'up',
               message: 'The good ship ' + entry.name + ' is sailing.',
               boat: entry.id
-            }, function(err,newLog){
-              return res.json({success: 'YAY', webhookurl: 'http://shipyard.ngrok.com/reload/' + entry.id});
+            }, function(err, newLog) {
+              return res.json({
+                success: 'YAY',
+                webhookurl: 'http://shipyard.ngrok.com/reload/' + entry.id
+              });
             });
           });
-      } catch (e){
+        });
+      } catch (e) {
         // failed, delete directory and object
         console.log(e);
-        spawnSync('rm', ['-rf', 'apps/'+entry.id]);
-        Boat.destroy({id:entry.id}, function(err, done){
-          if (err) return res.json({error: err});
-          return res.json({error: e});
+        spawnSync('rm', ['-rf', 'apps/' + entry.id]);
+        Boat.destroy({
+          id: entry.id
+        }, function(err, done) {
+          if (err) return res.json({
+            error: err
+          });
+          return res.json({
+            error: e
+          });
         });
       }
-    });
+    })
   },
 
   get: function(req, res) {
@@ -221,7 +265,7 @@ module.exports = {
         for (var i = 0; i < boats.length; i++) {
           var boat = boats[i];
 
-		  boat.uptime = Math.floor((Date.now() - boat.lastUpdated)/1000);
+          boat.uptime = Math.floor((Date.now() - boat.lastUpdated) / 1000);
 
           fleetOfBoats.push(boat);
 
