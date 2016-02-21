@@ -2,9 +2,32 @@
 <html>
     <head>
         <title>Shipyard</title>
-        <link rel="stylesheet" type="text/css" src="style.css"
+        <link rel="stylesheet" type="text/css" href="./css/style.css">
+        <link rel="stylesheet" type="text/css" href="./css/octicons/octicons.css">
     </head>
     <body>
-        <p>Hello World</p>
+        <div id="header">
+            <!-- Title Bar -->
+            <img id="headboat" src="./img/headboat.png" />
+            <p id="header">
+        </div>
+        <div id="mainwindow">
+            <!-- Flotilla of boats -->
+            <div id="listcontainer">
+                <!-- Sail away with me... -->
+                <p class="yourboat boattext">YOUR SHIPS</p>
+
+                <div class="boatbox">
+                    <!-- Row row row my boat, gently down the stream -->
+                    <!-- This is where the boat box goes, don't forget to scream! -->
+                    <p class="boattext" id="boatname">Server Name</p>
+                    <p class="boattext" id="boatname">:9000</p>
+                </div>
+
+                <!-- Add more ships to your shipyard, for those budding
+                admirals out there! -->
+                <div id="newboatbutton" onclick="#ß"><span class="mega-octicon octicon-plus" id="plussymbol"></span></div>
+            </div>
+        </div>
     </body>
 </html>
