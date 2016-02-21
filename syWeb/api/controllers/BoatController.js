@@ -150,6 +150,7 @@ module.exports = {
           }
 
         } catch (e) {
+          console.log('invalid');
           spawnSync('rm', ['-rf', 'apps/' + entry.id]);
           Boat.destroy({
             id: entry.id
