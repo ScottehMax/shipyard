@@ -7,8 +7,10 @@
 
 var http = require('http');
 var util  = require('util');
-var spawnSync = require('child_process').spawnSync;
+const spawnSync = require('child_process').spawnSync;
 var spawn = require('child_process').spawn;
+var execSync = require('child_process').execSync;
+var util = require('util');
 
 function getAllBoats(callback) {
 
@@ -49,78 +51,33 @@ module.exports = {
             for (var i = 0; i < boats.length; i++) {
               var boat = boats[i];
 
-              //console.log("boat: ", boat);
-
-              //ps = spawnSync('ps', ['aux', '|', 'grep', '/apps/'+boat.id+'/'+boat.mainAppFile, '|', 'wc', '-l', '|', '{', 'read', 'wc;', 'test', '$wc', '-gt', '1', '&&', 'echo', '"1"', '||', 'echo', '"0";', '}']); // runs the activity check
-
-              //const ps=spawnSync('ls', ['-lh', '/usr']); // runs the 'ls -lh /usr' shell cmd
-
-              //ps.stdout.on('data', function(data) { // handler for output on STDOUT
-            //      console.log('stdout: '+data);
-              //});
-
               console.log("");
               console.log("boat.id: ", boat.id);
               console.log("boat.name: ", boat.name);
               console.log("boat.mainAppFile: ", boat.mainAppFile);
 
-              var idAndMainApp = '/apps/'+boat.id+'/'+boat.mainAppFile;
+              var longString = "ps aux | grep \"/apps/" + boat.id+ "/" + boat.mainAppFile + "\" | wc -l";
 
-              var longString = "aux | grep \"/apps/" + boat.id+ "/" + boat.mainAppFile;
-              //var longString = "aux | grep \"/apps/" + boat.id+ "/" + boat.mainAppFile + "\" | wc -l";
-              //var longString = "ps aux | grep \"/apps/" + boat.id+ "/" + boat.mainAppFile + "\" | wc -l | { read wc; test $wc -gt 2 && echo \"true\" || echo \"false\"; }";
+              var command = execSync(longString).toString();
 
-              var longStringSplit = longString.split(" ");
+              var numberOfProcesses = command - 2;
+              var isActive = (numberOfProcesses > 0);
 
-              console.log("longString: ", longString);
-              console.log("longStringSplit: ", longStringSplit);
+              isActiveArray.push([boat.id ,isActive]);
 
-              var util = require('util');
+              /*
+              if (numberOfProcesses > 0){
+                  console.log("App #",boat.id, " is running");
+              } else {
+                  console.log("App #",boat.id, " isn't running")
+              }
 
-              //console.log("idAndMainApp: ", idAndMainApp);
-
-                function run(callback) {
-                    var spawn = require('child_process').spawn;
-                    var command = spawn('ps', ["aux"]);
-                    var result = '';
-                    command.stdout.on('data', function(data) {
-                        result += data.toString();
-                        console.log("Result in stdout: ", "abcdef");
-                    });
-
-                    command.on('close', function(code) {
-                        console.log("Result in close: ", "abcdef2");
-
-                        callback(result);
-                    });
-                }
-
-                run(function(result) { console.log("Active: ", "resultOutside"); });
-                //*/
-
-
-                /*
-                exec = require('child_process').exec, child;
-
-                child = exec(longString, // command line argument directly in string
-                  function (error, stdout, stderr) {      // one easy function to capture data/errors
-                      console.log("boat.id: ", boat.id);
-                      console.log("boat.name: ", boat.name);
-                    console.log('stdout: ' + stdout);
-                    //console.log('stderr: ' + stderr);
-                    if (error !== null) {
-                      console.log('exec error: ' + error);
-                    }
-                });
-                */
-
-              //var isActive = spawnSync('ps', ['aux', ''|'', 'grep', '/apps/'+boat.id+'/'+boat.mainAppFile, '|', 'wc', '-l', '|', '{', 'read', 'wc;', 'test', '$wc', '-gt', '1', '&&', 'echo', '"1"', '||', 'echo', '"0";', '}']);
-
-              //isActiveArray.push(isActive);
-
+              //console.log("Command: ", command);
+              //console.log("numberOfProcesses: ", numberOfProcesses);
               //console.log("isActive: ", isActive);
+              */
+
             }
-            //console.log("isActiveArray: ", isActiveArray);
             return res.json(isActiveArray);
         });
 
