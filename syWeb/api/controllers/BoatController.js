@@ -278,7 +278,6 @@ module.exports = {
 
           fleetOfBoats.push(boat);
 
-          console.log(fleetOfBoats);
         }
         return res.json(fleetOfBoats);
       }

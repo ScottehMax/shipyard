@@ -23,7 +23,7 @@ module.exports = {
 
     },
 
-    afterCreate: function (entry, cb) {
+    beforeCreate: function (values, cb) {
       var request = require('request');
 
       // Set the headers
@@ -39,8 +39,8 @@ module.exports = {
           headers: headers,
           form: {
             'type': 'note',
-            'title' : 'Shipyard | ' + entry.name,
-            'body' : entry.message,
+            'title' : 'Shipyard',
+            'body' : values.message,
 
           }
       }
