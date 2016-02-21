@@ -65,7 +65,7 @@ module.exports = {
             }
 
             //Save it to the object.
-            if boatModel.active = false; {
+            if (boatModel.active == false) {
                 boatModel.lastUpdated = new Date();
             }
 
