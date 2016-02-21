@@ -6,7 +6,7 @@
  */
 
 var http = require('http');
-const spawnSync = require('child_process').spawnSync; 
+const spawnSync = require('child_process').spawnSync;
 
 function getAllBoats(callback) {
 
@@ -49,7 +49,7 @@ module.exports = {
 
               console.log("boat: ", boat);
 
-              var isActive = spawnSync('ps', ['aux', ''|'', 'grep', '/apps/'+boat.id+'/'+boat.mainAppFile], '|', 'wc', '-l', '|', '{', 'read', 'wc;', 'test', '$wc', '-gt', '1', '&&', 'echo', '"true"', '||', 'echo', '"false";', '}');
+              var isActive = spawnSync('ps', ['aux', ''|'', 'grep', '/apps/'+boat.id+'/'+boat.mainAppFile, '|', 'wc', '-l', '|', '{', 'read', 'wc;', 'test', '$wc', '-gt', '1', '&&', 'echo', '"true"', '||', 'echo', '"false";', '}']);
 
               isActiveArray.push(isActive);
 
