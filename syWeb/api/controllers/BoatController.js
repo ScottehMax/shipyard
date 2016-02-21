@@ -90,6 +90,7 @@ module.exports = {
 	      console.log("[ADD] Repo is valid");
   		}
     } catch(e) {
+      console.log("[ADD] Repo is invalid");
       return res.json({error: 'Repo invalid: ' + e});
     }
     // create boat object
