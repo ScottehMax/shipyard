@@ -78,7 +78,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <input type="submit" value="submit" class="modal-action modal-close waves-effect waves-green btn-flat subbutton"/>
+                                    <input type="submit" value="submit" class="modal-action modal-close waves-effect waves-green btn subbutton"/>
                                     <div class="progress">
                                         <div class="indeterminate"></div>
                                     </div>
@@ -120,7 +120,8 @@
                         setTimeout(updateHarbour(), 100000);
                     },
                     error: function(thrownError) {
-                        Materialize.toast(JSON.stringify(thrownError), 2000, 'toastPos');
+                        console.log(JSON.stringify(thrownError));
+                        Materialize.toast('We hit an iceberg launching your code. Sorry.', 2000, 'toastPos');
                     }
                 });
             }

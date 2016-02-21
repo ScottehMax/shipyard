@@ -90,24 +90,26 @@ $(function() {
           url: "http://shipyard.ngrok.com/boat/create",
           data: dataString,
           success: function(data) {
-              var jdata = JSON.parse(data);
-              if(jdata.success){
+              if(data.success){
                   $('.progress').hide();
                   Materialize.toast('Ship has set sail successfully!', 2000, 'toastPos');
                   $('#modal1').closeModal();
-                  $('#changemeplease').text(jdata.webhookurl);
+                  $('#changemeplease').text(data.webhookurl);
                   $('#modal2').openModal();
                   setTimeout(updateHarbour(), 100000);
-
-              }
-              else {
+              } else {
                   $('.progress').hide();
-                  Materialize.toast('Ship has titanicked! Error.', 2000, 'toastPos');
+                  Materialize.toast(data.error, 2000, 'toastPos');
               }
+
+
+                 // $('.progress').hide();
+                  //Materialize.toast('Ship has titanicked! Error.', 2000, 'toastPos');
           },
           error: function(thrownError) {
               $('.progress').hide();
-              Materialize.toast(JSON.stringify(thrownError), 2000, 'toastPos');
+              console.log(JSON.stringify(thrownError));
+              Materialize.toast('We hit an iceberg launching your code. Sorry.', 2000, 'toastPos');
           }
       });
       return false;
