@@ -7,62 +7,6 @@
 
 const spawnSync = require('child_process').spawnSync; // scary!
 
-function getLastPullTime(boat, callback) {
-
-  // find last pull time
-  Log.findOne({
-    where: {
-      boat: boat.id,
-      type: 'pull'
-    },
-    sort: 'createdAt DESC'
-  }).exec(function(err, log) {
-    if (err) {
-      return res.json({
-        error: err
-      });
-    }
-
-    console.log(log);
-
-    if (log !== undefined) {
-      callback(log.createdAt);
-    } else {
-      callback(null);
-    }
-
-  });
-}
-
-function getUptime(boat, callback) {
-
-  // find and calculate uptime
-  Log.findOne({
-    where: {
-      boat: boat.id,
-      type: 'up'
-    },
-    sort: 'createdAt DESC'
-  }).exec(function(err, log) {
-    if (err) {
-      return res.json({
-        error: err
-      });
-    }
-
-    if (log !== undefined) {
-      var currentTime = Date.now();
-      var upAt = Date.parse(log.createdAt);
-      var uptime = Math.floor((currentTime - upAt) / 1000);
-      callback(uptime);
-    } else {
-      callback(null);
-    }
-
-  });
-
-}
-
 function getBoat(boatID){
   Boat.findOne({
     id: boatID
@@ -137,9 +81,14 @@ module.exports = {
   create: function(req,res) {
     // check if valid git repo
     try {
-      console.log("[ADD] Checking validity of " + req.param('boat_giturl'));
-      spawnSync('git', ['ls-remote', '--exit-code', '-h', '"'+req.param('boat_giturl')+'"'], {'cwd': './apps'});
-      console.log("[ADD] Repo is valid");
+      	console.log("[ADD] Checking validity of " + req.param('boat_giturl'));
+	  	if (req.param('boat_giturl') === undefined) {
+			console.log("Repo is undefined.");
+		    return res.json({error: "Repo is undefined."});
+	    } else {
+	      spawnSync('git', ['ls-remote', '--exit-code', '-h', '"'+req.param('boat_giturl')+'"'], {'cwd': './apps'});
+	      console.log("[ADD] Repo is valid");
+  		}
     } catch(e) {
       res.json({error: 'Repo invalid: ' + e});
     }
@@ -240,7 +189,7 @@ module.exports = {
             message: 'The good ship ' + entry.name + ' is sailing.',
             boat: entry.id
           }, function(err,newLog){
-            return res.json({success: 'YAY'});
+            return res.json({success: 'YAY', webhookurl: 'http://shipyard.ngrok.com/reload/' + entry.id});
           });
         });
       } catch (e){
