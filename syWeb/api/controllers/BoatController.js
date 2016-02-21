@@ -168,17 +168,65 @@ module.exports = {
 
       // MAN THE DECK BOYS, WE'RE COMING INTO THE HARBOUR
       try {
-        // Clone git
-        spawnSync('git', ['clone', entry.giturl, entry.id], {'cwd': './apps'});
-        spawnSync('npm', ['install'], {'cwd': './apps/' + entry.id});
-        console.log("Cloned the repo");
-        // Start server
-        spawnSync('forever', ['start', 'app.js'], {'cwd': './apps/' + entry.id});
-        return res.redirect("/");
+        try {
+          // Clone git
+          spawnSync('git', ['clone', entry.giturl, entry.id], {'cwd': './apps'});
+          console.log("Cloned the repo");
+        } catch(e) {
+          spawnSync('rm', ['-rf', 'apps/'+entry.id]);
+          Boat.destroy({id:entry.id}, function(err, done){
+            if (err) return res.json({error: err});
+            return res.json({error: e});
+          });
+          return res.send({error: 'Couldn\'t clone repo: ' + e});
+        }
+
+        try {
+          // install dependencies
+          spawnSync('npm', ['install'], {'cwd': './apps/' + entry.id});
+          console.log("Installed dependencies");
+        } catch(e) {
+          spawnSync('rm', ['-rf', 'apps/'+entry.id]);
+          Boat.destroy({id:entry.id}, function(err, done){
+            if (err) return res.json({error: err});
+            return res.json({error: e});
+          });
+          return res.send({error: 'Couldn\'t install dependencies: ' + e});
+        }
+
+        // Create log entry, code has been downloaded
+        Log.create({
+          type: 'pull',
+          message: 'HMS ' + entry.name + ' has been built and is almost ready for sailing.',
+          boat: entry.id
+        }, function(err,newLog){
+          if (err) return res.json({error: 'Error cloning repo:' + e});
+
+          try {
+            // Start server
+            spawnSync('forever', ['start', 'app.js'], {'cwd': './apps/' + entry.id});
+          } catch(e) {
+            spawnSync('rm', ['-rf', 'apps/'+entry.id]);
+            Boat.destroy({id:entry.id}, function(err, done){
+              if (err) return res.json({error: err});
+              return res.json({error: e});
+            });
+            return res.send({error: 'Couldn\'t start server: ' + e});
+          }
+
+          // Create log entry, server is up
+          Log.create({
+            type: 'up',
+            message: 'The good ship ' + entry.name + ' is sailing.',
+            boat: entry.id
+          }, function(err,newLog){
+            return res.redirect("/");
+          });
+        });
       } catch (e){
         // failed, delete directory and object
         console.log(e);
-        spawnSync('rm', ['apps/'+entry.id]);
+        spawnSync('rm', ['-rf', 'apps/'+entry.id]);
         Boat.destroy({id:entry.id}, function(err, done){
           if (err) return res.json({error: err});
           return res.json({error: e});
