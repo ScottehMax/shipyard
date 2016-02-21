@@ -43,8 +43,9 @@
       <p class="yourboat boattext">Add a new boat</p>
 
       <form id="addBoatForm" enctype="multipart/form-data" action="/boat/create" method="post">
-          <label>Name</label> <input type="text" name="boat_name"/>
-          <label>Git URL</label> <input type="text" name="boat_giturl"/>
+          <label>Name</label> <input type="text" name="boat_name"/><br />
+          <label>Git URL</label> <input type="text" name="boat_giturl"/><br />
+          <label>Main app file</label> <input type="text" value="app.js" name="boat_main_app_file"/>
           <input type="submit" value="submit"/>
       </form>
 

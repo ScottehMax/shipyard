@@ -27,6 +27,10 @@ module.exports = {
 
         lastUpdated: {
             type: 'datetime'
+        },
+
+        mainAppFile: {
+            type: 'string'
         }
     }
 };

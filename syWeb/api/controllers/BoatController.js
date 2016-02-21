@@ -141,6 +141,7 @@ module.exports = {
       name: req.param('boat_name'),
       active: false,
       giturl: req.param('boat_giturl'),
+      mainAppFile: req.param('boat_main_app_file'),
       lastUpdated: new Date()
     }, function(err, entry){
         if (err){
