@@ -88,11 +88,11 @@
   <div id="boatlistcontainer">
       <p class="yourboat boattext">YOUR BOATS</p>
       <% _.each(boats, function(model) { %>
-          <div class="boatbox up">
+          <div class="boatbox <%= if(model.active){ %>up<% } else { %>down<% } %>">
               <p class="boatname boattext"><%= model.name %></p>
               <p class="boatport boattext">
                 Port <%= model.port %><br>
-                <%= if (model.active){ %>
+                <%= if(model.active){ %>
                   Uptime: <%= Math.floor(model.uptime/60) %> Minutes
                 <% } else { %>
                   DOWN
