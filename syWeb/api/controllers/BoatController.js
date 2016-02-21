@@ -79,6 +79,11 @@ function getBoat(boatID) {
 module.exports = {
 
   create: function(req, res) {
+
+    spawnSync.on('error', (err) => {
+      console.log(err);
+    });
+
     // check if valid git repo
     try {
       console.log("[ADD] Checking validity of " + req.param('boat_giturl'));
@@ -99,6 +104,7 @@ module.exports = {
         error: 'Repo invalid: ' + e
       });
     }
+
     // create boat object
     Boat.create({
       name: req.param('boat_name'),
@@ -200,8 +206,6 @@ module.exports = {
             });
           }
 
-
-
           // set active
           Boat.update({
             id: entry.id
@@ -239,7 +243,7 @@ module.exports = {
           });
         });
       }
-    })
+    });
   },
 
   get: function(req, res) {
