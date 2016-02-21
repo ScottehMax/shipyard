@@ -135,13 +135,18 @@ function getBoat(boatID){
 module.exports = {
 
   create: function(req,res) {
+      //onsole.log(req);
     // create boat object
     Boat.create({
       name: req.param('boat_name'),
       active: false,
       giturl: req.param('boat_giturl'),
-      lastUpdated: Date.now()
+      lastUpdated: new Date()
     }, function(err, entry){
+        if (err){
+            return res.send(err);
+        }
+        console.log(entry);
       //create dir for id
       try {
           stats = fs.lstatSync('./apps/'+entry.id);

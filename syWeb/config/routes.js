@@ -33,7 +33,8 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': 'HarbourController.index',
-  '/reload/:id': 'WebhookController.run'
+  '/reload/:id': 'WebhookController.run',
+  '/addNewBoatForm': 'AddNewBoatController.index'
 
   /***************************************************************************
   *                                                                          *
