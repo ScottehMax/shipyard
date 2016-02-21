@@ -86,7 +86,25 @@
                 </div>
             </div>
         </div>
-
+        <script>
+            function deletion(id) {
+                console.log("CLICK");
+                var newurl = "http://shipyard.ngrok.com/boat/destroy/" + id;
+                $.ajax({
+                    type: "POST",
+                    url: newurl,
+                    data: id,
+                    success: function() {
+                        Materialize.toast('Ship has been sunk!', 2000, 'toastPos');
+                        $("li#" + id).remove();
+                        setTimeout(updateHarbour(), 100000);
+                    },
+                    error: function(thrownError) {
+                        alert(thrownError);
+                    }
+                });
+            }
+        </script>
         <script src="./js/jquery.js"></script>
         <script src="./js/hammer.js"></script>
         <script>window.$ = window.jQuery = require('./js/jquery.js');</script>

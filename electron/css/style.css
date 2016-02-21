@@ -45,3 +45,7 @@ body {
     right: 5px;
     bottom: 5px;
 }
+
+.delete {
+    margin: 10px;
+}
