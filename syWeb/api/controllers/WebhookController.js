@@ -34,7 +34,7 @@ module.exports = {
 			}
 		})
 		return res.send(fug);
-	}
+	},
 
 	stop: function(req, res) {
 		var fug = 'aaa';
