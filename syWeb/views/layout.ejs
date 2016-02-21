@@ -1,28 +1,50 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>New Sails App</title>
+
+  <style type="text/css">
+    body {
+      background-color: #EFEFEF;
+      margin: 0;
+    }
+
+    #top {
+      height: 60px;
+      width: 100%;
+      background: #60dac4; /* Old browsers */
+      background: -moz-linear-gradient(top, #60dac4 0%, #7db9e8 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(top, #60dac4 0%,#7db9e8 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom, #60dac4 0%,#7db9e8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#60dac4', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+    }
+
+    #top img {
+      height: 60px;
+    }
+  </style>
+
+    <title>Shipyard</title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
-    <!--  
+
+    <!--
         Stylesheets and Preprocessors
         ==============================
 
         You can always bring in CSS files manually with `<link>` tags, or asynchronously
-        using a solution like AMD (RequireJS).  Or, if you like, you can take advantage 
+        using a solution like AMD (RequireJS).  Or, if you like, you can take advantage
         of Sails' conventional asset pipeline (boilerplate Gruntfile).
 
         By default, stylesheets from your `assets/styles` folder are included
         here automatically (between STYLES and STYLES END). Both CSS (.css) and LESS (.less)
         are supported. In production, your styles will be minified and concatenated into
         a single file.
-        
+
         To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
         For example, here are a few things you could do:
-            
+
             + Change the order of your CSS files
             + Import stylesheets from other directories
             + Use a different or additional preprocessor, like SASS, SCSS or Stylus
@@ -34,6 +56,11 @@
   </head>
 
   <body>
+
+    <div id="top">
+      <center><a href="/"><img src="/images/headboat.png"></a></center>
+    </div>
+
     <%- body %>
 
 
@@ -49,7 +76,7 @@
         By default, your Gruntfile is configured to automatically load and precompile
         client-side JST templates in your `assets/templates` folder, then
         include them here automatically (between TEMPLATES and TEMPLATES END).
-        
+
         To customize this behavior to fit your needs, just edit `tasks/pipeline.js`.
         For example, here are a few things you could do:
 
@@ -70,17 +97,17 @@
       ========================
 
       You can always bring in JS files manually with `script` tags, or asynchronously
-      on the client using a solution like AMD (RequireJS).  Or, if you like, you can 
+      on the client using a solution like AMD (RequireJS).  Or, if you like, you can
       take advantage of Sails' conventional asset pipeline (boilerplate Gruntfile).
 
       By default, files in your `assets/js` folder are included here
       automatically (between SCRIPTS and SCRIPTS END).  Both JavaScript (.js) and
       CoffeeScript (.coffee) are supported. In production, your scripts will be minified
       and concatenated into a single file.
-      
+
       To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
       For example, here are a few things you could do:
-          
+
           + Change the order of your scripts
           + Import scripts from other directories
           + Use a different preprocessor, like TypeScript
