@@ -66,6 +66,7 @@ module.exports = {
 
             //Save it to the object.
 
+            boatModel.lastUpdated = Time.now();
             boatModel.active = true;
 
 
