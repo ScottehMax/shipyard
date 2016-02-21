@@ -91,7 +91,7 @@
           <div class="boatbox <% if(model.active){ %>up<% } else { %>down<% } %>">
               <p class="boatname boattext"><%= model.name %></p>
               <p class="boatport boattext">
-                <% if(model.active){ %>
+                <% if(model.port){ %>
                   Port <%= model.port %><br>
                 <% } %>
                 <% if(model.uptime){ %>
