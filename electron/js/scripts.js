@@ -115,6 +115,6 @@ $(function() {
       return false;
     });
 
-    setInterval(updateHarbour,10000);
+    setInterval(updateHarbour,15000);
 
 });
