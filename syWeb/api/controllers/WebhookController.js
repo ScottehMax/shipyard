@@ -5,7 +5,7 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
-const exec = require('child_process').exec; // scary!
+const execSync = require('child_process').execSync; // scary!
 var fs = require('fs');
 
 module.exports = {
@@ -22,10 +22,15 @@ module.exports = {
 			} else {
 				// everything worked, our ship has come in!
 				console.log('running git pull...');
-				exec('git pull', {'cwd': './apps/' + id});
+				execSync('git pull', {'cwd': './apps/' + id});
+				// fucking race conditions...
 				console.log('running forever app.js...');
-				exec('forever stop app.js', {'cwd': './apps/' + id});
-				exec('forever start app.js', {'cwd': './apps/' + id});
+				try {
+					execSync('forever stop app.js', {'cwd': './apps/' + id});
+				} catch (e) {
+					console.log('app is not running, or something else went wrong. blame jordan');
+				}
+				execSync('forever start app.js', {'cwd': './apps/' + id});
 			}
 		})
 		return res.send(fug);
