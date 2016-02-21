@@ -54,7 +54,7 @@ $(function() {
                     boats[boatID] = boatdata;
                 }
             }
-            Materialize.toast('Your harbour is set up!', 2000, 'toastPos');
+            Materialize.toast('Your harbour is updated!', 2000, 'toastPos');
         });
     }
     updateHarbour();
@@ -115,6 +115,6 @@ $(function() {
       return false;
     });
 
-
+    setInterval(updateHarbour,10000);
 
 });
