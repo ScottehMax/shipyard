@@ -15,21 +15,42 @@
       background: linear-gradient(to bottom, #60dac4 0%,#7db9e8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#60dac4', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
     }
+
+    #top img {
+      height: 60px;
+    }
+
+    .yourboat {
+      color: #2A6D73;
+    }
+
+    .boattext {
+        font-family: "Helvetica", sans-serif;
+        margin: 5px
+    }
+
     .boatbox {
-        height: 80px;
-        width: 900px;
-        border-left: 4px #49d71e solid;
+        width: auto;
+        overflow-x: hidden;
+        margin-bottom: 15px;
         background: white;
-        padding: 15px;
+        padding: 10px 15px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         vertical-align: middle;
     }
-    .boattext {
-        font-family: "Helvetica", sans-serif;
-        margin: 5px;
-    }
+      .up {
+        border-left: 4px #71D65B solid;
+      }
+      .down {
+        border-left: 4px #D65B5B solid;
+      }
+
     #boatlistcontainer {
         padding: 20px;
+        width: auto;
+        max-width: 900px;
+        margin: 0 auto;
+        display: block;
     }
     .boatname {
         font-size: 22px;
@@ -59,13 +80,25 @@
   </style>
 </head>
 <body>
-  <div id="top"></div>
+  <div id="top">
+    <center><img src="headboat.png"></center>
+  </div>
   <!-- The list of boats with header -->
   <div id="boatlistcontainer">
       <p class="yourboat boattext">YOUR SHIPS</p>
-      <div class="boatbox">
-          <p class="boatname boattext">Server Name</p>
-          <p class="boatport boattext">:9000</p>
+      <div class="boatbox up">
+          <p class="boatname boattext"><%= model.name %></p>
+          <p class="boatport boattext">
+            Port: 9000<br>
+            Uptime: 3 hours
+          </p>
+      </div>
+      <div class="boatbox up">
+          <p class="boatname boattext"><%= model.name %></p>
+          <p class="boatport boattext">
+            Port: 9000<br>
+            Uptime: 3 hours
+          </p>
       </div>
   </div>
   <div class="addnewbutton">+</div>
