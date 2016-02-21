@@ -144,6 +144,7 @@ module.exports = {
 
           // Check if repo was real
           var filesLen = fs.readdirSync('apps/' + entry.id);
+          console.log(filesLen.length);
           if (filesLen.length == 0){
             throw "Bad repo URL";
           }
