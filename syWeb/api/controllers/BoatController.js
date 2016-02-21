@@ -137,9 +137,14 @@ module.exports = {
   create: function(req,res) {
     // check if valid git repo
     try {
-      console.log("[ADD] Checking validity of " + req.param('boat_giturl'));
-      spawnSync('git', ['ls-remote', '--exit-code', '-h', '"'+req.param('boat_giturl')+'"'], {'cwd': './apps'});
-      console.log("[ADD] Repo is valid");
+      	console.log("[ADD] Checking validity of " + req.param('boat_giturl'));
+	  	if (req.param('boat_giturl') === undefined) {
+			console.log("Repo is undefined.");
+		    return res.json({error: "Repo is undefined."});
+	    } else {
+	      spawnSync('git', ['ls-remote', '--exit-code', '-h', '"'+req.param('boat_giturl')+'"'], {'cwd': './apps'});
+	      console.log("[ADD] Repo is valid");
+  		}
     } catch(e) {
       res.json({error: 'Repo invalid: ' + e});
     }
@@ -225,7 +230,7 @@ module.exports = {
             message: 'The good ship ' + entry.name + ' is sailing.',
             boat: entry.id
           }, function(err,newLog){
-            return res.json({success: 'YAY'});
+            return res.json({success: 'YAY', webhookurl: 'http://shipyard.ngrok.com/reload/' + entry.id});
           });
         });
       } catch (e){
