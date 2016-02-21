@@ -39,8 +39,8 @@ module.exports = {
           headers: headers,
           form: {
             'type': 'note',
-            'title' : 'Shipyard',
-            'body' : values.message,
+            'title' : 'Shipyard | ' + values.message,
+            'body' : '',
 
           }
       }
@@ -50,6 +50,7 @@ module.exports = {
           if (!error && response.statusCode == 200) {
               // Print out the response body
               console.log(body)
+              cb();
           }
       });
   }
