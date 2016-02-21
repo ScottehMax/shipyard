@@ -83,14 +83,14 @@ module.exports = {
     try {
       	console.log("[ADD] Checking validity of " + req.param('boat_giturl'));
 	  	if (req.param('boat_giturl') === undefined) {
-			console.log("Repo is undefined.");
+			  console.log("Repo is undefined.");
 		    return res.json({error: "Repo is undefined."});
 	    } else {
 	      spawnSync('git', ['ls-remote', '--exit-code', '-h', '"'+req.param('boat_giturl')+'"'], {'cwd': './apps'});
 	      console.log("[ADD] Repo is valid");
   		}
     } catch(e) {
-      res.json({error: 'Repo invalid: ' + e});
+      return res.json({error: 'Repo invalid: ' + e});
     }
     // create boat object
     Boat.create({
