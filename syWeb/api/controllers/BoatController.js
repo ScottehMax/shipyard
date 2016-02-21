@@ -135,7 +135,14 @@ function getBoat(boatID){
 module.exports = {
 
   create: function(req,res) {
-      //onsole.log(req);
+    // check if valid git repo
+    try {
+      console.log("[ADD] Checking validity of " + req.param('boat_giturl'));
+      spawnSync('git', ['ls-remote', '--exit-code', -'h', req.param('boat_giturl')], {'cwd': './apps'});
+      console.log("[ADD] Repo is valid");
+    } catch(e) {
+      res.json({error: 'Repo invalid: ' + e});
+    }
     // create boat object
     Boat.create({
       name: req.param('boat_name'),
@@ -147,7 +154,7 @@ module.exports = {
         if (err){
             return res.send(err);
         }
-        console.log(entry);
+        //console.log(entry);
       //create dir for id
       try {
           stats = fs.lstatSync('./apps/'+entry.id);
@@ -170,6 +177,7 @@ module.exports = {
       try {
         try {
           // Clone git
+          console.log("[ADD] Cloning repo");
           spawnSync('git', ['clone', entry.giturl, entry.id], {'cwd': './apps'});
           console.log("Cloned the repo");
         } catch(e) {
