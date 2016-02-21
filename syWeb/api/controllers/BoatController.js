@@ -169,6 +169,9 @@ module.exports = {
             });
           }
 
+
+		 try {
+
           // set active
           Boat.update({id:entry.id}, {active:true}, function(err, newBoat){
             if (err) console.log(err);
