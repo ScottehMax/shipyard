@@ -91,11 +91,17 @@
           <div class="boatbox <% if(model.active){ %>up<% } else { %>down<% } %>">
               <p class="boatname boattext"><%= model.name %></p>
               <p class="boatport boattext">
-                Port <%= model.port %><br>
                 <% if(model.active){ %>
-                  Uptime: <%= Math.floor(model.uptime/60) %> Minutes
+                  Port <%= model.port %><br>
+                <% } %>
+                <% if(model.uptime){ %>
+                  <% if(model.active){ %>
+                    Uptime: <%= Math.floor(model.uptime/60) %> Minutes
+                  <% } else { %>
+                    DOWN
+                  <% } %>
                 <% } else { %>
-                  DOWN
+                  No Uptime Stats
                 <% } %>
               </p>
           </div>
