@@ -220,7 +220,19 @@ module.exports = {
           }
 
           // set active
-          Boat.update({id:entry.id}, {active:true});
+          Boat.update({id:entry.id}, {active:true}, function(err, newBoat){
+            if (err) console.log(err);
+            console.log(newBoat);
+
+            // Create log entry, server is up
+            Log.create({
+              type: 'up',
+              message: 'The good ship ' + entry.name + ' is sailing.',
+              boat: entry.id
+            }, function(err,newLog){
+              return res.json({success: 'YAY'});
+            });
+          });
 
           // Create log entry, server is up
           Log.create({
