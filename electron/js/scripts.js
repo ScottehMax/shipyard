@@ -3,7 +3,8 @@ $(function() {
     $('.collapsible').collapsible({
       accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
     });
-
+    $('.progress').hide();
+    $('.slider').slider({full_width: true});
     // Create an array to keep track of all the boats you have on screen
     var boats = {"":""};
     console.log(boats);
@@ -18,8 +19,14 @@ $(function() {
                 var name = boatdata['name'];
                 var active = boatdata['active'];
                 var giturl = boatdata['giturl'];
-                var lastUpdated = boatdata['lastUpdated'];
+                var lastUpdated = Date(boatdata['lastUpdated']);
+
                 var uptime = boatdata['uptime'];
+                var uptimeMinutes = parseInt(uptime / 60)%60;
+                var uptimeHours = parseInt(uptime / 3600)%24;
+                var uptimeSeconds = uptime % 60
+                var uptimeString = uptimeHours + " hours, " + uptimeMinutes + " mins and " + uptimeSeconds + " seconds."
+
                 var icon = "";
                 var activeString = "";
                 if (active) {
@@ -31,8 +38,8 @@ $(function() {
                 }
 
                 // Don't look at the next line. Just. Don't. Please. For goodness sake save yoursef.
-                var boatItemHTML = "<li id='" + boatID + "'><div class='collapsible-header'><i class='material-icons'>" + icon + "</i>" + name + '</div><div class="collapsible-body"><p id="active">Active: ' +
-                    activeString + '</p><p id="giturl">Git Repo: ' + giturl + '</p><p id="lastUpdated">Last Updated: ' + lastUpdated + '</p><p id="uptime">Uptime: ' + uptime +
+                var boatItemHTML = "<li id='" + boatID + "'><div class='collapsible-header'><i class='material-icons'>" + icon + "</i>" + name + '</div><div class="collapsible-body white"><p id="active"><strong class="teal-text text-lighter-1">Active:  </strong>' +
+                    activeString + '</p><p id="giturl"><strong class="teal-text text-lighter-1">Git Repo:     </strong>' + giturl + '</p><p id="lastUpdated"><strong class="teal-text text-lighter-1">Last Updated: </strong>' + lastUpdated + '</p><p id="uptime"><strong class="teal-text text-lighter-1">Uptime:  </strong>' + uptimeString +
                     "</p><a onclick='deletion(" + boatID + ")' class='delete waves-effect waves-light btn' id='" + boatID + "'><i class='material-icons left'>delete</i>Delete</a></div></li>";
                 if (boats.hasOwnProperty(boatID)) {
                     // If the boat is not already in the list add it.
@@ -77,18 +84,30 @@ $(function() {
       var boat_main_app_file = $("input#boat_main_app_file").val();
 
       var dataString = 'boat_name=' + boat_name + '&boat_giturl=' + boat_giturl + '&boat_main_app_file=' + boat_main_app_file;
-
+      $('.progress').show();
       $.ajax({
           type: "POST",
           url: "http://shipyard.ngrok.com/boat/create",
           data: dataString,
-          success: function() {
-              Materialize.toast('Ship has set sail successfully!', 2000, 'toastPos');
-              $('#modal1').closeModal();
-              setTimeout(updateHarbour(), 100000);
+          success: function(data) {
+              var jdata = JSON.parse(data);
+              if(jdata.success){
+                  $('.progress').hide();
+                  Materialize.toast('Ship has set sail successfully!', 2000, 'toastPos');
+                  $('#modal1').closeModal();
+                  $('#changemeplease').text(jdata.webhookurl);
+                  $('#modal2').openModal();
+                  setTimeout(updateHarbour(), 100000);
+
+              }
+              else {
+                  $('.progress').hide();
+                  Materialize.toast('Ship has titanicked! Error.', 2000, 'toastPos');
+              }
           },
           error: function(thrownError) {
-              alert(thrownError);
+              $('.progress').hide();
+              Materialize.toast(JSON.stringify(thrownError), 2000, 'toastPos');
           }
       });
       return false;

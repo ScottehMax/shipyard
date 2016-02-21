@@ -79,11 +79,31 @@
                                 </div>
                                 <div class="modal-footer">
                                     <input type="submit" value="submit" class="modal-action modal-close waves-effect waves-green btn-flat subbutton"/>
+                                    <div class="progress">
+                                        <div class="indeterminate"></div>
+                                    </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
+                <div class="modal" id="modal2">
+                    <div class="modal-content">
+                        <h4>Add API to GitHub Webhook</h4>
+                        <code id="changemeplease">Oops - this is missing! Contact support!</code>
+                        <p class="">Please paste the above key into the screen as shown below:</p>
+
+                        <div class="slider">
+                            <ul class="slides">
+                                <li>
+                                    <img src="./img/screenshot1.png" />
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+                    </div>
             </div>
         </div>
         <script>
@@ -100,7 +120,7 @@
                         setTimeout(updateHarbour(), 100000);
                     },
                     error: function(thrownError) {
-                        alert(thrownError);
+                        Materialize.toast(JSON.stringify(thrownError), 2000, 'toastPos');
                     }
                 });
             }
