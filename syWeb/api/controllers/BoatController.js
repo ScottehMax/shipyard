@@ -91,9 +91,7 @@ module.exports = {
         var ss = spawnSync('git', ['ls-remote', '--exit-code', '-h', '"' + req.param('boat_giturl') + '"'], {
           'cwd': './apps'
         });
-        ss.on('error', (err) => {
-          console.log(err);
-        });
+        console.log(ss.error);
         console.log("[ADD] Repo is valid");
       }
     } catch (e) {
