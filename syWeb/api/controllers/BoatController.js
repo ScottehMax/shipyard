@@ -138,7 +138,7 @@ module.exports = {
     // check if valid git repo
     try {
       console.log("[ADD] Checking validity of " + req.param('boat_giturl'));
-      spawnSync('git', ['ls-remote', '--exit-code', -'h', req.param('boat_giturl')], {'cwd': './apps'});
+      spawnSync('git', ['ls-remote', '--exit-code', '-h', '"'+req.param('boat_giturl')+'"'], {'cwd': './apps'});
       console.log("[ADD] Repo is valid");
     } catch(e) {
       res.json({error: 'Repo invalid: ' + e});
