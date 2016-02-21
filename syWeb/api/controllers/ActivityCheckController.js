@@ -8,6 +8,7 @@
 var http = require('http');
 var util  = require('util');
 var execSync = require('child_process').execSync;
+var isActiveArray = [];
 
 function getAllBoats(callback) {
 
@@ -25,8 +26,6 @@ function getAllBoats(callback) {
 
             // Data reception is done, do whatever with it!
             var parsed = JSON.parse(body);
-
-            console.log("Before callback");
 
             callback(parsed);
         });
@@ -59,15 +58,15 @@ module.exports = {
         // });
 
         getAllBoats(function(boats) {
-            console.log("In end of callback");
-            console.log("boats: ", boats);
+            //console.log("boats: ", boats);
 
-            var isActiveArray = [];
+
 
             //console.log("boats: ", boats);
             //console.log("boats.length: ", boats.length);
-
+            console.log("bl: ", boats.length);
             for (var i = 0; i < boats.length; i++) {
+                console.log('current iteration ' + i);
               var boat = boats[i];
 
               //console.log("");
@@ -80,27 +79,7 @@ module.exports = {
               var command = execSync(longString).toString();
 
               var numberOfProcesses = command - 2;
-              var isActive = (numberOfProcesses > 0);
-
-              var boatModel = User.findOne(boat.id).done(function(error, boatModel) {
-                  if(error) {
-                     // do something with the error.
-                  }
-
-                  //Save it to the object.
-                  boatModel.active = isActive;
-
-                  console.log("Updated boat #", boatModel.id, "'s activity status'");
-
-                  boatModel.save(function(error) {
-                      if(error) {
-                          // do something with the error.
-                      } else {
-                          // value saved!
-                          req.send(boatModel);
-                      }
-                  });
-              });
+              var isActive;
 
             //   Boat.update({id:boat.id}).exec(function afterwards(err, updated){
               //
@@ -112,13 +91,65 @@ module.exports = {
             //       console.log('Updated user to have name ' + updated[0].name);
             //   });
 
-              isActiveArray.push([boat.id, isActive]);
-
               if (numberOfProcesses > 0){
                   console.log("App #",boat.id, " is running");
+                  Boat.findOne({id: boat.id}).exec(function(error, boatModel) {
+                      if(error) {
+                         // do something with the error.
+                         console.log(error);
+                      }
+
+                      //Save it to the object.
+
+                      boatModel.active = true;
+
+
+                      console.log("Updated boat #", boatModel.id, "'s activity status to true");
+
+                      boatModel.save(function(error) {
+                          if(error) {
+                              console.log(error);
+                              // do something with the error.
+                          } else {
+                              // value saved!
+                              console.log(boatModel.id, " saved");
+                          }
+                      });
+                  });
+                  isActive = true;
+                  isActiveArray[i] = [boat.id, true];
               } else {
                   console.log("App #",boat.id, " isn't running");
+                  Boat.findOne({id: boat.id}).exec(function(error, boatModel) {
+                      if(error) {
+                         // do something with the error.
+                         console.log(error);
+                      }
+
+                      //Save it to the object.
+
+                      boatModel.active = false;
+
+
+                      console.log("Updated boat #", boatModel.id, "'s activity status to false");
+
+                      boatModel.save(function(error) {
+                          if(error) {
+                              console.log(error);
+                              // do something with the error.
+                          } else {
+                              // value saved!
+                              console.log(boatModel.id, " saved");
+                          }
+                      });
+                  });
+                  isActive = false;
+                  isActiveArray[i] = [boat.id, false];
               }
+
+
+
+
 
               /*
               console.log("Command: ", command);
@@ -127,6 +158,8 @@ module.exports = {
               */
 
             }
+
+
             return res.json(isActiveArray);
         });
     }
