@@ -1,8 +1,8 @@
 body {
     margin: 0px;
     padding: 0px;
-    font-family: "Helvetica Neue", "Helvetica", sans-serif;
-    font-weight: 200;
+    /*font-family: "Helvetica Neue", "Helvetica", sans-serif;
+    font-weight: 200;*/
     background-color: #EFEFEF;
 }
 
@@ -18,9 +18,10 @@ body {
     height: 70px;
     margin-left: 30px;
 }
-/* The container for the list of boats (the dock? no offence docker) */
+
+/* This is only necessary cos I'm lazy and cba to do real placement */
 #listcontainer {
-    padding: 20px;
+    margin-left: 50px;
 }
 
 /* The box that you keep the boat in
@@ -28,32 +29,10 @@ body {
 .boatbox {
     height: 100px;
     width: 500px;
+    /*
     background: white;
     padding: 15px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 10px 0 rgba(0, 0, 0, 0.09);
     border-left: 4px #49d71e solid;
-}
-
-/* The button to float new boats */
-#newboatbutton {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 10px 0 rgba(0, 0, 0, 0.09);
-    position: absolute;
-    bottom: 50px;
-    right: 50px;
-    background: #ff4444;
-    color: #fff;
-    font-size: 42px;
-    text-align: center;
-    line-height: 65px;
-}
-
-#plussymbol {
-    width: 32px;
-    height: 32px;
-    top: 50%;
-    left: 50%;
-    margin: 0 auto;
+    */
 }

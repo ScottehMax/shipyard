@@ -2,32 +2,80 @@
 <html>
     <head>
         <title>Shipyard</title>
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+        <!-- Compiled and minified JavaScript -->
+
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="./css/style.css">
-        <link rel="stylesheet" type="text/css" href="./css/octicons/octicons.css">
     </head>
     <body>
+
+
+
+
         <div id="header">
             <!-- Title Bar -->
             <img id="headboat" src="./img/headboat.png" />
-            <p id="header">
+
         </div>
         <div id="mainwindow">
             <!-- Flotilla of boats -->
             <div id="listcontainer">
                 <!-- Sail away with me... -->
-                <p class="yourboat boattext">YOUR SHIPS</p>
+                <h5 class="light-blue-text text-darken-4" style="margin-top: 15px;">YOUR SHIPS</h5>
 
-                <div class="boatbox">
+                <div class="card boatbox leftshift">
+                    <div class="card-content">
                     <!-- Row row row my boat, gently down the stream -->
                     <!-- This is where the boat box goes, don't forget to scream! -->
-                    <p class="boattext" id="boatname">Server Name</p>
-                    <p class="boattext" id="boatname">:9000</p>
+                        <p class="" id="">Server Name</p>
+                        <p class="" id="">:9000</p>
+                    </div>
                 </div>
 
                 <!-- Add more ships to your shipyard, for those budding
                 admirals out there! -->
-                <div id="newboatbutton" onclick="#ß"><span class="mega-octicon octicon-plus" id="plussymbol"></span></div>
+                <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+                    <a class="btn-floating btn-large waves-effect waves-light red floatboat modal-trigger" onclick="$('#modal1').openModal();"><i class="material-icons">add</i></a>
+                </div>
+
+                <!-- Pop up for adding new boats -->
+                <div id="modal1" class="modal">
+                    <div class="modal-content">
+                        <h4>Add New Boat</h4>
+                        <div class="row">
+                            <!-- Form for creating a new boat -->
+                            <form class="col s12">
+                                <div class="row">
+                                    <p> </p>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <input placeholder="Name of Boat" id="boat_name" type="text">
+                                        <label for="boat_name">First Name</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <input placeholder="URL" id="url" type="text">
+                                        <label for="url">Boat URL</label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <script src="./js/jquery.js"></script>
+        <script src="./js/hammer.js"></script>
+        <script>window.$ = window.jQuery = require('./js/jquery.js');</script>
+        <script src="./js/materialize.js"></script>
     </body>
 </html>
