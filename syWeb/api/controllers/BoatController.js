@@ -157,7 +157,7 @@ module.exports = {
       catch (e) {
           // doesn't exist tbh
           console.log('Folder ' + entry.id + ' does not exist, creating...');
-          exec('mkdir apps/'+entry.id));
+          exec('mkdir apps/'+entry.id);
       }
 
       // MAN THE DECK BOYS, WE'RE COMING INTO THE HARBOUR
@@ -169,14 +169,14 @@ module.exports = {
         });
       }).catch(function (reasonForFailure) {
         // failed, delete directory and object
-        exec('rm apps/'+entry.id));
+        exec('rm apps/'+entry.id);
         Boat.destroy({id:entry.id}, function(err, done){
           if (err) return res.json({error: err});
           return res.json({error: reasonForFailure});
         });
       }).done(function (reasonForFailure) {
         // failed, delete directory and object
-        exec('rm apps/'+entry.id));
+        exec('rm apps/'+entry.id);
         Boat.destroy({id:entry.id}, function(err, done){
           if (err) return res.json({error: err});
           return res.json({error: reasonForFailure});
