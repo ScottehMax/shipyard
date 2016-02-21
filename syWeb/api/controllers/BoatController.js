@@ -162,21 +162,25 @@ module.exports = {
           // doesn't exist tbh
           console.log('Folder ' + entry.id + ' does not exist, creating...');
           spawnSync('mkdir', ['apps/'+entry.id]);
+          console.log("Created the folder");
       }
 
       // MAN THE DECK BOYS, WE'RE COMING INTO THE HARBOUR
       try {
         // Clone git
-        spawnSync('git', ['clone', entry.giturl], {'cwd': './apps/' + id});
+        spawnSync('git', ['clone', entry.giturl, entry.id], {'cwd': './apps'});
+        spawnSync('npm', ['install'], {'cwd': './apps/' + entry.id});
+        console.log("Cloned the repo");
         // Start server
-        spawnSync('forever', ['start', 'app.js'], {'cwd': './apps/' + id});
-        return res.json({success: true});
+        spawnSync('forever', ['start', 'app.js'], {'cwd': './apps/' + entry.id});
+        return res.redirect("/");
       } catch (e){
         // failed, delete directory and object
+        console.log(e);
         spawnSync('rm', ['apps/'+entry.id]);
         Boat.destroy({id:entry.id}, function(err, done){
           if (err) return res.json({error: err});
-          return res.json({error: reasonForFailure});
+          return res.json({error: e});
         });
       }
     });
