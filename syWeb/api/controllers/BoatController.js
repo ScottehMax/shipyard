@@ -5,6 +5,9 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var Git = require("nodegit");
+const exec = require('child_process').spawn; // scary!
+
 function getLastPullTime(boat, callback) {
 
   // find last pull time
@@ -158,7 +161,27 @@ module.exports = {
       }
 
       // MAN THE DECK BOYS, WE'RE COMING INTO THE HARBOUR
-
+      Git.Clone(entry.giturl, './apps/' + id).then(function(repository) {
+        // Start server
+        var foreverstart = spawn('forever', ['start', 'app.js'], {'cwd': './apps/' + id});
+        foreverstart.stdout.on('data', (data) => {
+          console.log(`stdout: ${data}`);
+        });
+      }).catch(function (reasonForFailure) {
+        // failed, delete directory and object
+        exec('rm apps/'+entry.id));
+        Boat.destroy({id:entry.id}, function(err, done){
+          if (err) return res.json({error: err});
+          return res.json({error: reasonForFailure});
+        });
+      }).done(function (reasonForFailure) {
+        // failed, delete directory and object
+        exec('rm apps/'+entry.id));
+        Boat.destroy({id:entry.id}, function(err, done){
+          if (err) return res.json({error: err});
+          return res.json({error: reasonForFailure});
+        });
+      });
     });
   },
 
