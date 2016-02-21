@@ -6,6 +6,7 @@
  */
 
 const spawnSync = require('child_process').spawnSync; // scary!
+var fs = require('fs');
 
 function getBoat(boatID) {
   Boat.findOne({
@@ -95,6 +96,7 @@ module.exports = {
       }
     } catch (e) {
       console.log("[ADD] Repo is invalid");
+      console.log('99');
       return res.json({
         error: 'Repo invalid: ' + e
       });
@@ -109,7 +111,8 @@ module.exports = {
       lastUpdated: new Date()
     }, function(err, entry) {
       if (err) {
-        return res.send(err);
+        console.log('113');
+        return res.json({error: err});
       }
       //console.log(entry);
       //create dir for id
@@ -138,17 +141,22 @@ module.exports = {
             'cwd': './apps'
           });
           console.log("Cloned the repo");
+
+          // Check if repo was real
+          var filesLen = fs.readdirSync('apps/' + entry.id);
+          if (filesLen.length == 0){
+            throw "Bad repo URL";
+          }
+
         } catch (e) {
           spawnSync('rm', ['-rf', 'apps/' + entry.id]);
           Boat.destroy({
             id: entry.id
           }, function(err, done) {
-            if (err) return res.json({
-              error: err
-            });
-            return res.json({
-              error: 'Couldn\'t clone repo: ' + e
-            });
+
+          });
+          return res.json({
+            error: 'Couldn\'t clone repo: ' + e
           });
         }
 
@@ -179,7 +187,7 @@ module.exports = {
           boat: entry.id
         }, function(err, newLog) {
           if (err) return res.json({
-            error: 'Error cloning repo:' + e
+            error: 'Error cloning repo:' + err
           });
 
           try {
