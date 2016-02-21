@@ -150,8 +150,8 @@ module.exports = {
 
               console.log(entry.id + ' is a file, removing it and making a directory');
               // >: (
-              exec('rm apps/'+entry.id));
-              exec('mkdir apps/'+entry.id));
+              exec('rm apps/'+entry.id);
+              exec('mkdir apps/'+entry.id);
           }
       }
       catch (e) {
