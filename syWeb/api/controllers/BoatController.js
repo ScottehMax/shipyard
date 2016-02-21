@@ -88,10 +88,9 @@ module.exports = {
           error: "Repo is undefined."
         });
       } else {
-        var ss = spawnSync('git', ['ls-remote', '--exit-code', '-h', '"' + req.param('boat_giturl') + '"'], {
+        spawnSync('git', ['ls-remote', '--exit-code', '-h', '"' + req.param('boat_giturl') + '"'], {
           'cwd': './apps'
         });
-        console.log(ss.error);
         console.log("[ADD] Repo is valid");
       }
     } catch (e) {
@@ -120,19 +119,13 @@ module.exports = {
 
           console.log(entry.id + ' is a file, removing it and making a directory');
           // >: (
-          spawnSync('rm', ['apps/' + entry.id]).on('error', (err) => {
-            console.log(err);
-          });
-          spawnSync('mkdir', ['apps/' + entry.id]).on('error', (err) => {
-            console.log(err);
-          });
+          spawnSync('rm', ['apps/' + entry.id]);
+          spawnSync('mkdir', ['apps/' + entry.id]);
         }
       } catch (e) {
         // doesn't exist tbh
         console.log('Folder ' + entry.id + ' does not exist, creating...');
-        spawnSync('mkdir', ['apps/' + entry.id]).on('error', (err) => {
-          console.log(err);
-        });
+        spawnSync('mkdir', ['apps/' + entry.id]);
         console.log("Created the folder");
       }
 
@@ -143,14 +136,10 @@ module.exports = {
           console.log("[ADD] Cloning repo");
           spawnSync('git', ['clone', entry.giturl, entry.id], {
             'cwd': './apps'
-          }).on('error', (err) => {
-            console.log(err);
           });
           console.log("Cloned the repo");
         } catch (e) {
-          spawnSync('rm', ['-rf', 'apps/' + entry.id]).on('error', (err) => {
-            console.log(err);
-          });
+          spawnSync('rm', ['-rf', 'apps/' + entry.id]);
           Boat.destroy({
             id: entry.id
           }, function(err, done) {
@@ -167,14 +156,10 @@ module.exports = {
           // install dependencies
           spawnSync('npm', ['install'], {
             'cwd': './apps/' + entry.id
-          }).on('error', (err) => {
-            console.log(err);
           });
           console.log("Installed dependencies");
         } catch (e) {
-          spawnSync('rm', ['-rf', 'apps/' + entry.id]).on('error', (err) => {
-            console.log(err);
-          });
+          spawnSync('rm', ['-rf', 'apps/' + entry.id]);
           Boat.destroy({
             id: entry.id
           }, function(err, done) {
@@ -201,13 +186,9 @@ module.exports = {
             // Start server
             spawnSync('forever', ['start', 'app.js'], {
               'cwd': './apps/' + entry.id
-            }).on('error', (err) => {
-              console.log(err);
             });
           } catch (e) {
-            spawnSync('rm', ['-rf', 'apps/' + entry.id]).on('error', (err) => {
-              console.log(err);
-            });
+            spawnSync('rm', ['-rf', 'apps/' + entry.id]);
             Boat.destroy({
               id: entry.id
             }, function(err, done) {
@@ -245,9 +226,7 @@ module.exports = {
       } catch (e) {
         // failed, delete directory and object
         console.log(e);
-        spawnSync('rm', ['-rf', 'apps/' + entry.id]).on('error', (err) => {
-          console.log(err);
-        });
+        spawnSync('rm', ['-rf', 'apps/' + entry.id]);
         Boat.destroy({
           id: entry.id
         }, function(err, done) {
