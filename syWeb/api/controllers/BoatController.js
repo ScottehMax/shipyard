@@ -80,10 +80,6 @@ module.exports = {
 
   create: function(req, res) {
 
-    spawnSync.on('error', (err) => {
-      console.log(err);
-    });
-
     // check if valid git repo
     try {
       console.log("[ADD] Checking validity of " + req.param('boat_giturl'));
@@ -95,6 +91,8 @@ module.exports = {
       } else {
         spawnSync('git', ['ls-remote', '--exit-code', '-h', '"' + req.param('boat_giturl') + '"'], {
           'cwd': './apps'
+        }).on('error', (err) => {
+          console.log(err);
         });
         console.log("[ADD] Repo is valid");
       }
@@ -124,13 +122,19 @@ module.exports = {
 
           console.log(entry.id + ' is a file, removing it and making a directory');
           // >: (
-          spawnSync('rm', ['apps/' + entry.id]);
-          spawnSync('mkdir', ['apps/' + entry.id]);
+          spawnSync('rm', ['apps/' + entry.id]).on('error', (err) => {
+            console.log(err);
+          });
+          spawnSync('mkdir', ['apps/' + entry.id]).on('error', (err) => {
+            console.log(err);
+          });
         }
       } catch (e) {
         // doesn't exist tbh
         console.log('Folder ' + entry.id + ' does not exist, creating...');
-        spawnSync('mkdir', ['apps/' + entry.id]);
+        spawnSync('mkdir', ['apps/' + entry.id]).on('error', (err) => {
+          console.log(err);
+        });
         console.log("Created the folder");
       }
 
@@ -141,10 +145,14 @@ module.exports = {
           console.log("[ADD] Cloning repo");
           spawnSync('git', ['clone', entry.giturl, entry.id], {
             'cwd': './apps'
+          }).on('error', (err) => {
+            console.log(err);
           });
           console.log("Cloned the repo");
         } catch (e) {
-          spawnSync('rm', ['-rf', 'apps/' + entry.id]);
+          spawnSync('rm', ['-rf', 'apps/' + entry.id]).on('error', (err) => {
+            console.log(err);
+          });
           Boat.destroy({
             id: entry.id
           }, function(err, done) {
@@ -161,10 +169,14 @@ module.exports = {
           // install dependencies
           spawnSync('npm', ['install'], {
             'cwd': './apps/' + entry.id
+          }).on('error', (err) => {
+            console.log(err);
           });
           console.log("Installed dependencies");
         } catch (e) {
-          spawnSync('rm', ['-rf', 'apps/' + entry.id]);
+          spawnSync('rm', ['-rf', 'apps/' + entry.id]).on('error', (err) => {
+            console.log(err);
+          });
           Boat.destroy({
             id: entry.id
           }, function(err, done) {
@@ -191,9 +203,13 @@ module.exports = {
             // Start server
             spawnSync('forever', ['start', 'app.js'], {
               'cwd': './apps/' + entry.id
+            }).on('error', (err) => {
+              console.log(err);
             });
           } catch (e) {
-            spawnSync('rm', ['-rf', 'apps/' + entry.id]);
+            spawnSync('rm', ['-rf', 'apps/' + entry.id]).on('error', (err) => {
+              console.log(err);
+            });
             Boat.destroy({
               id: entry.id
             }, function(err, done) {
@@ -231,7 +247,9 @@ module.exports = {
       } catch (e) {
         // failed, delete directory and object
         console.log(e);
-        spawnSync('rm', ['-rf', 'apps/' + entry.id]);
+        spawnSync('rm', ['-rf', 'apps/' + entry.id]).on('error', (err) => {
+          console.log(err);
+        });
         Boat.destroy({
           id: entry.id
         }, function(err, done) {
