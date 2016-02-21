@@ -219,6 +219,9 @@ module.exports = {
             });
           }
 
+          // set active
+          Boat.update({id:entry.id}, {active:true});
+
           // Create log entry, server is up
           Log.create({
             type: 'up',
