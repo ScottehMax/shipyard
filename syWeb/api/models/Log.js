@@ -51,13 +51,6 @@ module.exports = {
               // Print out the response body
               console.log(body)
           }
-      })
-      // Encrypt password
-      bcrypt.hash(values.password, 10, function(err, hash) {
-        if(err) return cb(err);
-        values.password = hash;
-        //calling cb() with an argument returns an error. Useful for canceling the entire operation if some criteria fails.
-        cb();
       });
   }
 };
