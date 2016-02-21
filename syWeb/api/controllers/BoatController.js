@@ -220,7 +220,7 @@ module.exports = {
             message: 'The good ship ' + entry.name + ' is sailing.',
             boat: entry.id
           }, function(err,newLog){
-            return res.redirect("/");
+            return res.json({success: 'YAY'});
           });
         });
       } catch (e){
