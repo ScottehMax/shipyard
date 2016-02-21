@@ -23,6 +23,12 @@ module.exports = {
 				// everything worked, our ship has come in!
 				console.log('running git pull...');
 				execSync('git pull', {'cwd': './apps/' + id});
+				Log.create({
+					type: 'pull',
+					message: 'HMS ' + boat.name + ' has been built and is almost ready for sailing.',
+					boat: boat.id
+				}, function(err, newLog) {});
+
 				// fucking race conditions...
 				console.log('running forever app.js...');
 				try {
@@ -31,6 +37,11 @@ module.exports = {
 					console.log('app is not running, or something else went wrong. blame jordan');
 				}
 				execSync('forever start app.js', {'cwd': './apps/' + id});
+				Log.create({
+					type: 'up',
+					message: 'The good ship ' + boat.name + ' is sailing.',
+					boat: boat.id
+				}, function(err, newLog) {});
 			}
 		})
 		return res.send(fug);
@@ -54,6 +65,11 @@ module.exports = {
 				console.log('running forever app.js...');
 				try {
 					execSync('forever stop app.js', {'cwd': './apps/' + id});
+					Log.create({
+						type: 'down',
+						message: 'The good ship ' + boat.name + ' has capsized.',
+						boat: boat.id
+					}, function(err, newLog) {});
 				} catch (e) {
 					console.log('app is not running, or something else went wrong. blame jordan');
 				}
