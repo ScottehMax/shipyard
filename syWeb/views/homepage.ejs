@@ -86,11 +86,18 @@
   </div>
   <!-- The list of boats with header -->
   <div id="boatlistcontainer">
-      <p class="yourboat boattext">YOUR SHIPS</p>
+      <p class="yourboat boattext">YOUR BOATS</p>
       <% _.each(boats, function(model) { %>
           <div class="boatbox up">
               <p class="boatname boattext"><%= model.name %></p>
-              <p class="boatport boattext">:<%= model.port %></p>
+              <p class="boatport boattext">
+                Port <%= model.port %><br>
+                <%= if (model.active){ %>
+                  Uptime: <%= Math.floor(model.uptime/60) %> Minutes
+                <% } else { %>
+                  DOWN
+                <% } %>
+              </p>
           </div>
       <% }) %>
   </div>
