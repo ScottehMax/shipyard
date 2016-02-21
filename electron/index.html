@@ -20,19 +20,25 @@
 
         </div>
         <div id="mainwindow">
+            <h5 class="light-blue-text text-darken-4 shiptitle">YOUR SHIPS</h5>
             <!-- Flotilla of boats -->
-            <div id="listcontainer">
+            <div class="container" id="listcontainer">
                 <!-- Sail away with me... -->
-                <h5 class="light-blue-text text-darken-4" style="margin-top: 15px;">YOUR SHIPS</h5>
 
-                <div class="card boatbox leftshift">
+
+                <!-- <div class="card boatbox leftshift">
                     <div class="card-content">
-                    <!-- Row row row my boat, gently down the stream -->
-                    <!-- This is where the boat box goes, don't forget to scream! -->
+                    <! Row row row my boat, gently down the stream>
+                    <!This is where the boat box goes, don't forget to scream! >
                         <p class="" id="">Server Name</p>
                         <p class="" id="">:9000</p>
                     </div>
-                </div>
+                </div> -->
+
+                <!-- This is the shipyard of boats. Ahoy hoy. -->
+                <ul class="collapsible popout boatlistcont" data-collapsible="accordion" id="boatlistcont">
+
+                </ul>
 
                 <!-- Add more ships to your shipyard, for those budding
                 admirals out there! -->
@@ -46,28 +52,36 @@
                         <h4>Add New Boat</h4>
                         <div class="row">
                             <!-- Form for creating a new boat -->
-                            <form class="col s12">
+                            <form class="col s12" id="addBoatForm" enctype="multipart/form-data" action="/boat/create" method="post">
                                 <div class="row">
                                     <p> </p>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s6">
-                                        <input placeholder="Name of Boat" id="boat_name" type="text">
-                                        <label for="boat_name">First Name</label>
+                                        <input placeholder="Name of Boat" id="boat_name" name="boat_name" type="text">
+                                        <label class="error" for="boat_name" id="boat_name_error">This field is required.</label>
+                                        <label for="boat_name" id="boat_name_label">Boat Name</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s6">
-                                        <input placeholder="URL" id="url" type="text">
-                                        <label for="url">Boat URL</label>
+                                        <input placeholder="URL" id="boat_giturl" name="boat_giturl" type="text">
+                                        <label class="error" for="boat_giturl" id="boat_giturl_error">This field is required.</label>
+                                        <label for="boat_giturl" id="boat_giturl_label">Git Repo URL</label>
                                     </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <input placeholder="Main App File" id="boat_main_app_file" name="boat_main_app_file" type="text" value="app.js">
+                                        <label for="boat_main_app_file" id="boat_main_app_file_label">Main App File</label>
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" value="submit" class="modal-action modal-close waves-effect waves-green btn-flat subbutton"/>
                                 </div>
                             </form>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">OK</a>
-                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
                     </div>
                 </div>
             </div>
@@ -77,5 +91,6 @@
         <script src="./js/hammer.js"></script>
         <script>window.$ = window.jQuery = require('./js/jquery.js');</script>
         <script src="./js/materialize.js"></script>
+        <script src="./js/scripts.js"></script>
     </body>
 </html>

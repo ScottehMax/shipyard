@@ -20,8 +20,12 @@ body {
 }
 
 /* This is only necessary cos I'm lazy and cba to do real placement */
-#listcontainer {
-    margin-left: 50px;
+
+
+.shiptitle {
+    margin-left: 25px;
+    margin-top: 20px;
+    margin-bottom: 15px;
 }
 
 /* The box that you keep the boat in
@@ -35,4 +39,9 @@ body {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 10px 0 rgba(0, 0, 0, 0.09);
     border-left: 4px #49d71e solid;
     */
+}
+
+.subbutton {
+    right: 5px;
+    bottom: 5px;
 }
