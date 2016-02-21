@@ -34,7 +34,8 @@ module.exports.routes = {
 
   '/': 'HarbourController.index',
   '/reload/:id': 'WebhookController.run',
-  '/addNewBoatForm': 'AddNewBoatController.index'
+  '/addNewBoatForm': 'AddNewBoatController.index',
+  '/checkStatus': 'ActivityCheckController.checkActivityStatus'
 
   /***************************************************************************
   *                                                                          *
