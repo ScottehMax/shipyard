@@ -180,19 +180,9 @@ module.exports = {
               message: 'The good ship ' + entry.name + ' is sailing.',
               boat: entry.id
             }, function(err,newLog){
-              return res.json({success: 'YAY'});
+              return res.json({success: 'YAY', webhookurl: 'http://shipyard.ngrok.com/reload/' + entry.id});
             });
           });
-
-          // Create log entry, server is up
-          Log.create({
-            type: 'up',
-            message: 'The good ship ' + entry.name + ' is sailing.',
-            boat: entry.id
-          }, function(err,newLog){
-            return res.json({success: 'YAY', webhookurl: 'http://shipyard.ngrok.com/reload/' + entry.id});
-          });
-        });
       } catch (e){
         // failed, delete directory and object
         console.log(e);
