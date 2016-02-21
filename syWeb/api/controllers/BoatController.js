@@ -132,6 +132,36 @@ function getBoat(boatID){
 
 module.exports = {
 
+  create: function(req,res) {
+    // create boat object
+    Boat.create({
+      name: req.param('boat_name'),
+      active: false,
+      giturl: req.param('boat_giturl'),
+      lastUpdated: Date.now()
+    }, function(err, entry){
+      //create dir for id
+      try {
+          stats = fs.lstatSync('./apps/'+entry.id);
+          if (!stats.isDirectory()) {
+
+              console.log(entry.id + ' is a file, removing it and making a directory');
+              // >: (
+              exec('rm apps/'+entry.id));
+              exec('mkdir apps/'+entry.id));
+          }
+      }
+      catch (e) {
+          // doesn't exist tbh
+          console.log('Folder ' + entry.id + ' does not exist, creating...');
+          exec('mkdir apps/'+entry.id));
+      }
+
+      // MAN THE DECK BOYS, WE'RE COMING INTO THE HARBOUR
+
+    });
+  },
+
   get: function(req, res) {
     var boatID = req.param('id');
     return res.json(getBoat(boatID));

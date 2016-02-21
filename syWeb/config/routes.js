@@ -32,7 +32,8 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': 'HarbourController.index'
+  '/': 'HarbourController.index',
+  '/reload/:id': 'WebhookController.run'
 
   /***************************************************************************
   *                                                                          *
