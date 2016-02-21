@@ -176,9 +176,8 @@ module.exports = {
           spawnSync('rm', ['-rf', 'apps/'+entry.id]);
           Boat.destroy({id:entry.id}, function(err, done){
             if (err) return res.json({error: err});
-            return res.json({error: e});
+            return res.json({error: 'Couldn\'t clone repo: ' + e});
           });
-          return res.send({error: 'Couldn\'t clone repo: ' + e});
         }
 
         try {
@@ -189,9 +188,8 @@ module.exports = {
           spawnSync('rm', ['-rf', 'apps/'+entry.id]);
           Boat.destroy({id:entry.id}, function(err, done){
             if (err) return res.json({error: err});
-            return res.json({error: e});
+            return res.json({error: 'Couldn\'t install dependencies: ' + e});
           });
-          return res.send({error: 'Couldn\'t install dependencies: ' + e});
         }
 
         // Create log entry, code has been downloaded
@@ -209,9 +207,8 @@ module.exports = {
             spawnSync('rm', ['-rf', 'apps/'+entry.id]);
             Boat.destroy({id:entry.id}, function(err, done){
               if (err) return res.json({error: err});
-              return res.json({error: e});
+              return res.json({error: 'Couldn\'t start server: ' + e});
             });
-            return res.send({error: 'Couldn\'t start server: ' + e});
           }
 
           // Create log entry, server is up
