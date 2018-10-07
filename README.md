@@ -1,10 +1,11 @@
-Shipyard
-========
+<div align="center">
 
-- Let us float your boat.
-- Don't get lost at sea with Node.JS servers.
-- Let us ship your code.
-- Don't let your code be _sub_ par.
-- Anchor your code with us.
-- Sink all the competition.
+# Shipyard
 
+A tool for helping with CI and server management, developed at the STACSHack 2016 hackathon in St. Andrews, Scotland.
+
+<br>
+
+<img alt="Screenshot" src="https://i.imgur.com/yhYrhwo.png" />
+
+</div>
